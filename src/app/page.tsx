@@ -135,7 +135,6 @@ export default function UsdtMiningLab() {
 
   // Live Stats
   const [liveHashrate, setLiveHashrate] = useState(128.45);
-  const [onlineVisitors, setOnlineVisitors] = useState(1847);
 
   // Sequential Glow Effect State
   const [activePlatformGlow, setActivePlatformGlow] = useState(0);
@@ -354,17 +353,6 @@ export default function UsdtMiningLab() {
         return Math.max(128, Math.min(129, prev + change));
       });
     }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Online visitors fluctuation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setOnlineVisitors(prev => {
-        const change = Math.floor(Math.random() * 5) - 2;
-        return Math.max(1800, Math.min(1900, prev + change));
-      });
-    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -1431,7 +1419,7 @@ export default function UsdtMiningLab() {
                     <div className="mb-1">
                       <span className="text-3xl font-black text-transparent bg-clip-text"
                         style={{ backgroundImage: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)' }}>
-                        <AnimatedCounter end={onlineVisitors} prefix="" decimals={0} />
+                        <AnimatedCounter end={platformStats.onlineUsers} prefix="" decimals={0} />
                       </span>
                     </div>
                     <div className="text-gray-400 text-sm font-medium mb-2">Online Users</div>
