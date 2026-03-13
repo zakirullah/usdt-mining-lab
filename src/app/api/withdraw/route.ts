@@ -133,10 +133,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify PIN
-    if (session.user.securityPin !== hashPin(pin)) {
+    // Verify Withdraw PIN (Security PIN)
+    if (session.user.withdrawPin !== hashPin(pin)) {
       return NextResponse.json(
-        { success: false, error: 'Invalid security PIN' },
+        { success: false, error: 'Invalid Security PIN' },
         { status: 400 }
       );
     }

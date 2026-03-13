@@ -119,8 +119,10 @@ export default function UsdtMiningLab() {
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [walletInput, setWalletInput] = useState('');
   const [pinInput, setPinInput] = useState('');
+  const [withdrawPinInput, setWithdrawPinInput] = useState(''); // Security PIN for withdrawals
   const [referralInput, setReferralInput] = useState('');
   const [showPinVisibility, setShowPinVisibility] = useState(false);
+  const [showWithdrawPinVisibility, setShowWithdrawPinVisibility] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -418,7 +420,15 @@ export default function UsdtMiningLab() {
       return;
     }
     if (!pinInput || pinInput.length !== 6) {
-      setError('PIN must be exactly 6 digits');
+      setError('Login PIN must be exactly 6 digits');
+      return;
+    }
+    if (!withdrawPinInput || withdrawPinInput.length !== 6) {
+      setError('Security PIN must be exactly 6 digits');
+      return;
+    }
+    if (pinInput === withdrawPinInput) {
+      setError('Login PIN and Security PIN must be different');
       return;
     }
     setIsLoading(true);
@@ -427,7 +437,12 @@ export default function UsdtMiningLab() {
       const res = await fetch('/api/auth/register-wallet', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ walletAddress: walletInput, pin: pinInput, referralCode: referralInput || undefined })
+        body: JSON.stringify({ 
+          walletAddress: walletInput, 
+          loginPin: pinInput, 
+          withdrawPin: withdrawPinInput, 
+          referralCode: referralInput || undefined 
+        })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Registration failed');
@@ -455,6 +470,7 @@ export default function UsdtMiningLab() {
     setShowDashboard(false);
     setWalletInput('');
     setPinInput('');
+    setWithdrawPinInput('');
     setSuccess('Logged out successfully');
   };
 
@@ -1985,7 +2001,9 @@ export default function UsdtMiningLab() {
 
                 {/* PIN Code */}
                 <div>
-                  <label className="text-gray-400 text-xs mb-1 block">6 Digit PIN Code</label>
+                  <label className="text-gray-400 text-xs mb-1 block">
+                    {authMode === 'register' ? 'Login PIN (6 Digits)' : '6 Digit PIN Code'}
+                  </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                     <Input
@@ -2005,6 +2023,38 @@ export default function UsdtMiningLab() {
                     </button>
                   </div>
                 </div>
+
+                {/* Security PIN for Withdrawals (Register Only) */}
+                {authMode === 'register' && (
+                  <div>
+                    <label className="text-gray-400 text-xs mb-1 block flex items-center gap-1">
+                      <Shield className="w-3 h-3 text-amber-400" />
+                      Security PIN for Withdrawals (6 Digits)
+                    </label>
+                    <div className="relative">
+                      <Shield className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-500" />
+                      <Input
+                        type={showWithdrawPinVisibility ? "text" : "password"}
+                        maxLength={6}
+                        placeholder="••••••"
+                        value={withdrawPinInput}
+                        onChange={(e) => setWithdrawPinInput(e.target.value.replace(/\D/g, ''))}
+                        className="bg-slate-800 border-amber-500/30 text-white placeholder:text-gray-600 h-11 pl-10 pr-10 rounded-xl text-center text-lg tracking-widest focus:border-amber-500"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowWithdrawPinVisibility(!showWithdrawPinVisibility)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-amber-400"
+                      >
+                        {showWithdrawPinVisibility ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    <p className="text-amber-400/70 text-xs mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      This PIN is required for withdrawals
+                    </p>
+                  </div>
+                )}
 
                 {/* Referral Code (Register Only) */}
                 {authMode === 'register' && (

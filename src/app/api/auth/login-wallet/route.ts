@@ -48,10 +48,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify PIN
-    if (user.securityPin !== hashPin(pin)) {
+    // Verify Login PIN
+    if (user.loginPin !== hashPin(pin)) {
       return NextResponse.json(
-        { error: 'Incorrect PIN' },
+        { error: 'Incorrect Login PIN' },
         { status: 400 }
       );
     }

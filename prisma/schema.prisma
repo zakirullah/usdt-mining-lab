@@ -17,7 +17,8 @@ model User {
   email         String   @unique
   password      String
   walletAddress String   @unique
-  securityPin   String
+  loginPin      String   // 6-digit PIN for login
+  withdrawPin   String   // 6-digit PIN for withdrawals only
   referralCode  String   @unique
   referredBy    String?
   deviceOs      String?

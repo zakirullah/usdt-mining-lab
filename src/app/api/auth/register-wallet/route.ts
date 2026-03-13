@@ -15,7 +15,7 @@ function generateToken(): string {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { walletAddress, pin, referralCode } = body;
+    const { walletAddress, loginPin, withdrawPin, referralCode } = body;
 
     // Validate wallet address
     if (!walletAddress || !walletAddress.startsWith('0x') || walletAddress.length !== 42) {
@@ -25,10 +25,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate PIN - must be exactly 6 digits
-    if (!pin || pin.length !== 6 || !/^\d{6}$/.test(pin)) {
+    // Validate Login PIN - must be exactly 6 digits
+    if (!loginPin || loginPin.length !== 6 || !/^\d{6}$/.test(loginPin)) {
       return NextResponse.json(
-        { error: 'PIN must be exactly 6 digits' },
+        { error: 'Login PIN must be exactly 6 digits' },
+        { status: 400 }
+      );
+    }
+
+    // Validate Withdraw PIN - must be exactly 6 digits
+    if (!withdrawPin || withdrawPin.length !== 6 || !/^\d{6}$/.test(withdrawPin)) {
+      return NextResponse.json(
+        { error: 'Security PIN must be exactly 6 digits' },
+        { status: 400 }
+      );
+    }
+
+    // Check if both PINs are different
+    if (loginPin === withdrawPin) {
+      return NextResponse.json(
+        { error: 'Login PIN and Security PIN must be different' },
         { status: 400 }
       );
     }
@@ -74,13 +90,14 @@ export async function POST(request: NextRequest) {
     // Generate email from wallet
     const generatedEmail = `${normalizedWallet.slice(2, 10)}@usdtmining.io`;
 
-    // Create user
+    // Create user with both PINs
     const user = await db.user.create({
       data: {
         email: generatedEmail,
-        password: hashPin(pin),
+        password: hashPin(loginPin),
         walletAddress: normalizedWallet,
-        securityPin: hashPin(pin),
+        loginPin: hashPin(loginPin),
+        withdrawPin: hashPin(withdrawPin),
         referralCode: randomBytes(4).toString('hex').toUpperCase(),
         referredBy: referrerUser?.referralCode || null,
         deviceOs
