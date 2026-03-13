@@ -7,7 +7,7 @@ import {
   Lock, Eye, EyeOff, RefreshCw,
   ArrowDownRight, ArrowUpRight, Crown, Activity, Cpu, Gift,
   LogOut, Clock, Home, Copy, Check, X, AlertCircle, CheckCircle,
-  ChevronRight, DollarSign, HelpCircle, MessageCircle, Settings, Server
+  ChevronRight, DollarSign, HelpCircle, MessageCircle, Settings, Server, Upload
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
@@ -492,6 +492,16 @@ export default function UsdtMiningLab() {
   const [withdrawError, setWithdrawError] = useState<string | null>(null);
   const [withdrawSuccess, setWithdrawSuccess] = useState<string | null>(null);
 
+  // Deposit State
+  const [depositAmount, setDepositAmount] = useState('');
+  const [depositTxHash, setDepositTxHash] = useState('');
+  const [depositScreenshot, setDepositScreenshot] = useState<string | null>(null);
+  const [depositLoading, setDepositLoading] = useState(false);
+  const [depositError, setDepositError] = useState<string | null>(null);
+  const [depositSuccess, setDepositSuccess] = useState<string | null>(null);
+  const [userDeposits, setUserDeposits] = useState<Array<{ id: string; amount: number; txHash: string; status: string; createdAt: string }>>([]);
+  const [userWithdrawals, setUserWithdrawals] = useState<Array<{ id: string; amount: number; walletAddress: string; status: string; createdAt: string }>>([]);
+
   // Fetch recent withdrawals from API
   useEffect(() => {
     const fetchWithdrawals = async () => {
@@ -566,6 +576,97 @@ export default function UsdtMiningLab() {
       setWithdrawLoading(false);
     }
   };
+
+  // Handle Deposit
+  const handleDeposit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validate amount
+    if (!depositAmount || parseFloat(depositAmount) < 10) {
+      setDepositError('Minimum deposit is 10 USDT');
+      return;
+    }
+    
+    // Validate TXID
+    if (!depositTxHash || depositTxHash.trim().length === 0) {
+      setDepositError('Transaction hash (TXID) is required');
+      return;
+    }
+    
+    setDepositLoading(true);
+    setDepositError(null);
+    
+    try {
+      const res = await fetch('/api/deposit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: parseFloat(depositAmount),
+          txHash: depositTxHash.trim(),
+          screenshotUrl: depositScreenshot
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Deposit failed');
+      
+      setDepositSuccess('Deposit submitted successfully! Awaiting admin approval.');
+      setDepositAmount('');
+      setDepositTxHash('');
+      setDepositScreenshot(null);
+      fetchUserDeposits(); // Refresh deposit history
+      fetchUserData(); // Refresh user data
+    } catch (err) {
+      setDepositError(err instanceof Error ? err.message : 'Deposit failed');
+    } finally {
+      setDepositLoading(false);
+    }
+  };
+
+  // Handle screenshot upload
+  const handleScreenshotUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setDepositScreenshot(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Fetch user deposits
+  const fetchUserDeposits = async () => {
+    try {
+      const res = await fetch('/api/deposit');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.data) {
+          setUserDeposits(data.data);
+        }
+      }
+    } catch { /* ignore */ }
+  };
+
+  // Fetch user withdrawals
+  const fetchUserWithdrawals = async () => {
+    try {
+      const res = await fetch('/api/withdraw');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.data) {
+          setUserWithdrawals(data.data);
+        }
+      }
+    } catch { /* ignore */ }
+  };
+
+  // Fetch user deposits and withdrawals when dashboard is shown
+  useEffect(() => {
+    if (showDashboard) {
+      fetchUserDeposits();
+      fetchUserWithdrawals();
+    }
+  }, [showDashboard]);
 
   // Live Activity Ticker State
   const [tickerActivities, setTickerActivities] = useState<Array<{
@@ -3000,6 +3101,44 @@ export default function UsdtMiningLab() {
                   Withdrawals are processed within 24 hours
                 </div>
               </form>
+
+              {/* Withdrawal History */}
+              <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-5">
+                <h3 className="text-white font-bold text-lg mb-4">Withdrawal History</h3>
+                {userWithdrawals.length > 0 ? (
+                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                    {userWithdrawals.map((withdrawal) => (
+                      <div key={withdrawal.id} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl border border-white/10">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
+                            <ArrowUpRight className="w-5 h-5 text-red-400" />
+                          </div>
+                          <div>
+                            <div className="text-white font-medium">${withdrawal.amount} USDT</div>
+                            <div className="text-gray-500 text-xs font-mono truncate max-w-[150px]">
+                              {withdrawal.walletAddress.slice(0, 8)}...{withdrawal.walletAddress.slice(-6)}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className={`text-xs px-2 py-1 rounded-full font-medium ${
+                            withdrawal.status === 'approved' ? 'bg-green-500/20 text-green-400' :
+                            withdrawal.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                            'bg-red-500/20 text-red-400'
+                          }`}>
+                            {withdrawal.status.charAt(0).toUpperCase() + withdrawal.status.slice(1)}
+                          </div>
+                          <div className="text-gray-500 text-xs mt-1">
+                            {new Date(withdrawal.createdAt).toLocaleDateString()}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-center py-6">No withdrawals yet</p>
+                )}
+              </div>
             </motion.div>
           )}
 
@@ -3020,6 +3159,7 @@ export default function UsdtMiningLab() {
                 </div>
               </div>
 
+              {/* Deposit Address */}
               <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-5 text-center">
                 <div className="text-gray-400 text-sm mb-3">Deposit Address (BEP20)</div>
                 <div className="bg-slate-800 rounded-xl p-4 mb-4 relative group">
@@ -3037,8 +3177,140 @@ export default function UsdtMiningLab() {
                   </button>
                 </div>
                 <p className="text-gray-500 text-xs">
-                  Send USDT (BEP20) to this address. Your deposit will be credited automatically after 3 confirmations.
+                  Send USDT (BEP20) to this address. Minimum deposit: 10 USDT.
                 </p>
+              </div>
+
+              {/* Deposit Form */}
+              <form onSubmit={handleDeposit} className="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
+                <h3 className="text-white font-bold text-lg">Submit Deposit</h3>
+                
+                {depositError && (
+                  <div className="bg-red-500/20 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl flex items-center gap-2 text-sm">
+                    <AlertCircle className="w-4 h-4" />
+                    {depositError}
+                  </div>
+                )}
+                {depositSuccess && (
+                  <div className="bg-green-500/20 border border-green-500/30 text-green-400 px-4 py-3 rounded-xl flex items-center gap-2 text-sm">
+                    <CheckCircle className="w-4 h-4" />
+                    {depositSuccess}
+                  </div>
+                )}
+
+                <div>
+                  <label className="text-gray-400 text-sm mb-2 block">Amount (USDT) *</label>
+                  <div className="relative">
+                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                    <Input
+                      type="number"
+                      placeholder="Minimum 10 USDT"
+                      value={depositAmount}
+                      onChange={(e) => setDepositAmount(e.target.value)}
+                      className="bg-slate-800 border-white/10 text-white placeholder:text-gray-600 h-12 pl-10 rounded-xl text-lg"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-gray-400 text-sm mb-2 block">Transaction Hash (TXID) *</label>
+                  <Input
+                    placeholder="0x..."
+                    value={depositTxHash}
+                    onChange={(e) => setDepositTxHash(e.target.value)}
+                    className="bg-slate-800 border-white/10 text-white placeholder:text-gray-600 h-12 rounded-xl font-mono text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-gray-400 text-sm mb-2 block">Screenshot (Optional)</label>
+                  <div className="relative">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleScreenshotUpload}
+                      className="hidden"
+                      id="screenshot-upload"
+                    />
+                    <label
+                      htmlFor="screenshot-upload"
+                      className="flex items-center justify-center gap-2 h-12 bg-slate-800 border border-white/10 rounded-xl cursor-pointer hover:bg-slate-700 transition-colors"
+                    >
+                      <Upload className="w-5 h-5 text-gray-400" />
+                      <span className="text-gray-400 text-sm">
+                        {depositScreenshot ? 'Screenshot uploaded' : 'Upload screenshot'}
+                      </span>
+                    </label>
+                  </div>
+                  {depositScreenshot && (
+                    <div className="mt-2 relative inline-block">
+                      <img src={depositScreenshot} alt="Screenshot" className="h-20 rounded-lg" />
+                      <button
+                        type="button"
+                        onClick={() => setDepositScreenshot(null)}
+                        className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center"
+                      >
+                        <X className="w-3 h-3 text-white" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <motion.button
+                  type="submit"
+                  disabled={depositLoading}
+                  whileHover={{ scale: 1.02, boxShadow: '0 0 25px rgba(34, 197, 94, 0.6)' }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full h-12 rounded-xl font-bold text-white flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600"
+                >
+                  {depositLoading ? (
+                    <>
+                      <RefreshCw className="w-5 h-5 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <ArrowDownRight className="w-5 h-5" />
+                      Submit Deposit
+                    </>
+                  )}
+                </motion.button>
+              </form>
+
+              {/* Deposit History */}
+              <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-5">
+                <h3 className="text-white font-bold text-lg mb-4">Deposit History</h3>
+                {userDeposits.length > 0 ? (
+                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                    {userDeposits.map((deposit) => (
+                      <div key={deposit.id} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl border border-white/10">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
+                            <ArrowDownRight className="w-5 h-5 text-green-400" />
+                          </div>
+                          <div>
+                            <div className="text-white font-medium">${deposit.amount} USDT</div>
+                            <div className="text-gray-500 text-xs font-mono truncate max-w-[150px]">{deposit.txHash}</div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className={`text-xs px-2 py-1 rounded-full font-medium ${
+                            deposit.status === 'approved' ? 'bg-green-500/20 text-green-400' :
+                            deposit.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                            'bg-red-500/20 text-red-400'
+                          }`}>
+                            {deposit.status.charAt(0).toUpperCase() + deposit.status.slice(1)}
+                          </div>
+                          <div className="text-gray-500 text-xs mt-1">
+                            {new Date(deposit.createdAt).toLocaleDateString()}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-center py-6">No deposits yet</p>
+                )}
               </div>
             </motion.div>
           )}
@@ -3215,9 +3487,11 @@ export default function UsdtMiningLab() {
                 </div>
               </div>
 
+              {/* Referral Link Section */}
               <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-2xl p-5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl" />
                 <div className="relative">
+                  {/* Referral Code */}
                   <div className="text-center mb-4">
                     <div className="text-gray-400 text-sm mb-2">Your Referral Code</div>
                     <div className="bg-slate-800 rounded-xl p-4 inline-block">
@@ -3226,23 +3500,52 @@ export default function UsdtMiningLab() {
                       </span>
                     </div>
                   </div>
+
+                  {/* Referral Link */}
+                  <div className="mb-4">
+                    <div className="text-gray-400 text-sm mb-2 text-center">Your Referral Link</div>
+                    <div className="bg-slate-800 rounded-xl p-3 relative group">
+                      <div className="text-cyan-400 font-mono text-xs break-all pr-10">
+                        {typeof window !== 'undefined' ? `${window.location.origin}?ref=${user?.referralCode || ''}` : `https://usdtmining.com?ref=${user?.referralCode || ''}`}
+                      </div>
+                      <button
+                        onClick={() => {
+                          const link = typeof window !== 'undefined' 
+                            ? `${window.location.origin}?ref=${user?.referralCode || ''}` 
+                            : `https://usdtmining.com?ref=${user?.referralCode || ''}`;
+                          navigator.clipboard.writeText(link);
+                          setCopied(true);
+                          setSuccess('Referral link copied!');
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-slate-700 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <Copy className="w-4 h-4 text-white" />
+                      </button>
+                    </div>
+                  </div>
+
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => {
-                      navigator.clipboard.writeText(user?.referralCode || '');
+                      const link = typeof window !== 'undefined' 
+                        ? `${window.location.origin}?ref=${user?.referralCode || ''}` 
+                        : `https://usdtmining.com?ref=${user?.referralCode || ''}`;
+                      navigator.clipboard.writeText(link);
                       setCopied(true);
-                      setSuccess('Referral code copied!');
+                      setSuccess('Referral link copied!');
                       setTimeout(() => setCopied(false), 2000);
                     }}
                     className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600 text-white font-bold flex items-center justify-center gap-2"
                   >
                     {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                    {copied ? 'Copied!' : 'Copy Code'}
+                    {copied ? 'Copied!' : 'Copy Referral Link'}
                   </motion.button>
                 </div>
               </div>
 
+              {/* Referral Stats */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-5 text-center">
                   <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mx-auto mb-3">
@@ -3260,12 +3563,13 @@ export default function UsdtMiningLab() {
                 </div>
               </div>
 
+              {/* Commission Info */}
               <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-xl p-4">
                 <div className="flex items-center gap-2 text-amber-400 font-bold text-lg mb-1">
                   <Gift className="w-5 h-5" />
                   7% Commission
                 </div>
-                <p className="text-gray-400 text-sm">Share your referral code and earn 7% commission on every deposit made by your referrals!</p>
+                <p className="text-gray-400 text-sm">Share your referral link and earn 7% commission on every deposit made by your referrals!</p>
               </div>
             </motion.div>
           )}

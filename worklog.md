@@ -185,3 +185,68 @@ Stage Summary:
 - Login panel on right side
 - Mobile responsive design
 - All existing functionality preserved
+
+---
+Task ID: 5
+Agent: Main Agent
+Task: Full USDT Mining Lab Dashboard Enhancement - APIs and Frontend
+
+Work Log:
+1. Enhanced Deposit API (/api/deposit/route.ts):
+   - Added GET method to fetch user's deposit history
+   - Added screenshotUrl support for deposit proof (base64 or URL)
+   - Added proper validation for amount (min 10 USDT) and TXID
+   - Returns standardized response format: { success, data, error }
+
+2. Enhanced Withdrawal API (/api/withdraw/route.ts):
+   - Added GET method to fetch user's withdrawal history
+   - Added BEP20 wallet address validation (0x + 40 chars)
+   - Added 6-digit PIN validation
+   - Proper balance validation before withdrawal
+
+3. Updated Mining Start API (/api/mining/start/route.ts):
+   - Two plans: Starter (4% daily, min 10 USDT) and Pro (4.5% daily, min 100 USDT)
+   - Calculate profit per second: (investment * dailyPercent) / 86400
+   - Duration: 30 days
+   - Returns profitPerSecond in response
+
+4. Updated Mining Update API (/api/mining/update/route.ts):
+   - Updates mining profit every second
+   - Adds profit to user's balance and totalProfit in real-time
+   - Handles mining completion with proper fund distribution
+   - Returns progress percentage and time remaining
+
+5. Updated User Me API (/api/user/me/route.ts):
+   - Returns complete user data with deposits, withdrawals, mining sessions
+   - Includes referral stats and total earnings
+   - Returns profit per second for active mining
+
+6. Updated Admin API (/api/admin/route.ts):
+   - GET pending deposits: type=pending-deposits
+   - GET pending withdrawals: type=pending-withdrawals
+   - POST approve/reject with action and id
+   - Proper 3-level referral commission handling (5%, 2%, 1%)
+
+7. Dashboard Frontend Updates:
+   - Deposit Tab: Added deposit form with amount, TXID, screenshot upload
+   - Deposit Tab: Added deposit history table with status badges (Yellow=Pending, Green=Approved, Red=Rejected)
+   - Withdraw Tab: Added withdrawal history table with status badges
+   - Referral Tab: Added full referral link with copy button
+   - All status badges use proper colors (bg-yellow-500/20 text-yellow-400, etc.)
+
+8. Validation Implementation:
+   - All amounts must be numbers > 0
+   - TXID must be provided
+   - Wallet address must be valid BEP20 (0x + 40 chars)
+   - PIN must be 6 digits
+
+Stage Summary:
+- Complete API enhancement with GET/POST methods for all endpoints
+- Proper validation for all inputs
+- Standardized API response format
+- Deposit form with screenshot upload capability
+- Deposit and withdrawal history tables with status badges
+- Full referral link display with copy functionality
+- Real-time mining profit updates to user balance
+- All code compiles without errors (lint passed)
+- Dev server running successfully on localhost:3000

@@ -21,13 +21,13 @@ async function checkAdmin(request: NextRequest) {
   return session;
 }
 
-// Get all users
+// GET - Fetch admin data
 export async function GET(request: NextRequest) {
   try {
     const session = await checkAdmin(request);
     if (!session) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { success: false, error: 'Unauthorized' },
         { status: 403 }
       );
     }
@@ -35,8 +35,44 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type');
 
+    // Get pending deposits
+    if (type === 'pending-deposits') {
+      const deposits = await db.deposit.findMany({
+        where: { status: 'pending' },
+        include: {
+          user: {
+            select: { 
+              id: true,
+              email: true, 
+              walletAddress: true 
+            }
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      });
+      return NextResponse.json({ success: true, data: deposits });
+    }
+
+    // Get pending withdrawals
+    if (type === 'pending-withdrawals') {
+      const withdrawals = await db.withdrawal.findMany({
+        where: { status: 'pending' },
+        include: {
+          user: {
+            select: { 
+              id: true,
+              email: true, 
+              walletAddress: true 
+            }
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      });
+      return NextResponse.json({ success: true, data: withdrawals });
+    }
+
+    // Get dashboard stats
     if (type === 'stats') {
-      // Get dashboard stats
       const totalUsers = await db.user.count();
       const totalDeposits = await db.deposit.aggregate({
         where: { status: 'approved' },
@@ -52,18 +88,26 @@ export async function GET(request: NextRequest) {
       const pendingWithdrawals = await db.withdrawal.count({
         where: { status: 'pending' }
       });
+      const activeMiners = await db.userMining.count({
+        where: { status: 'active' }
+      });
 
       return NextResponse.json({
-        stats: {
-          totalUsers,
-          totalDeposits: totalDeposits._sum.amount || 0,
-          totalWithdrawals: totalWithdrawals._sum.amount || 0,
-          pendingDeposits,
-          pendingWithdrawals
+        success: true,
+        data: {
+          stats: {
+            totalUsers,
+            totalDeposits: totalDeposits._sum.amount || 0,
+            totalWithdrawals: totalWithdrawals._sum.amount || 0,
+            pendingDeposits,
+            pendingWithdrawals,
+            activeMiners
+          }
         }
       });
     }
 
+    // Get all users
     if (type === 'users') {
       const users = await db.user.findMany({
         select: {
@@ -80,61 +124,64 @@ export async function GET(request: NextRequest) {
         },
         orderBy: { createdAt: 'desc' }
       });
-      return NextResponse.json({ users });
+      return NextResponse.json({ success: true, data: users });
     }
 
+    // Get all deposits
     if (type === 'deposits') {
       const deposits = await db.deposit.findMany({
         include: {
           user: {
-            select: { email: true, walletAddress: true }
+            select: { id: true, email: true, walletAddress: true }
           }
         },
         orderBy: { createdAt: 'desc' }
       });
-      return NextResponse.json({ deposits });
+      return NextResponse.json({ success: true, data: deposits });
     }
 
+    // Get all withdrawals
     if (type === 'withdrawals') {
       const withdrawals = await db.withdrawal.findMany({
         include: {
           user: {
-            select: { email: true, walletAddress: true }
+            select: { id: true, email: true, walletAddress: true }
           }
         },
         orderBy: { createdAt: 'desc' }
       });
-      return NextResponse.json({ withdrawals });
+      return NextResponse.json({ success: true, data: withdrawals });
     }
 
+    // Get settings
     if (type === 'settings') {
       const settings = await db.adminSettings.findFirst();
-      return NextResponse.json({ settings });
+      return NextResponse.json({ success: true, data: settings });
     }
 
-    return NextResponse.json({ error: 'Invalid type parameter' }, { status: 400 });
+    return NextResponse.json({ success: false, error: 'Invalid type parameter' }, { status: 400 });
   } catch (error) {
     console.error('Admin GET error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     );
   }
 }
 
-// Handle admin actions
+// POST - Handle admin actions
 export async function POST(request: NextRequest) {
   try {
     const session = await checkAdmin(request);
     if (!session) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { success: false, error: 'Unauthorized' },
         { status: 403 }
       );
     }
 
     const body = await request.json();
-    const { action, id, data } = body;
+    const { action, id, userId, data } = body;
 
     switch (action) {
       case 'approveDeposit':
@@ -153,21 +200,18 @@ export async function POST(request: NextRequest) {
         return await handleUpdateSettings(data);
       
       case 'toggleUser':
-        return await handleToggleUser(id);
-      
-      case 'createMiningPlan':
-        return await handleCreateMiningPlan(id, data);
+        return await handleToggleUser(userId);
       
       default:
         return NextResponse.json(
-          { error: 'Invalid action' },
+          { success: false, error: 'Invalid action' },
           { status: 400 }
         );
     }
   } catch (error) {
     console.error('Admin POST error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     );
   }
@@ -182,93 +226,43 @@ async function handleApproveDeposit(depositId: string, adminId: string) {
 
   if (!deposit || deposit.status !== 'pending') {
     return NextResponse.json(
-      { error: 'Deposit not found or already processed' },
+      { success: false, error: 'Deposit not found or already processed' },
       { status: 400 }
     );
   }
 
-  // Check if user already has active mining
-  const activeMining = await db.userMining.findFirst({
-    where: { userId: deposit.userId, status: 'active' }
-  });
-
-  if (activeMining) {
-    // Add to balance instead
-    await db.$transaction([
-      db.deposit.update({
-        where: { id: depositId },
-        data: {
-          status: 'approved',
-          approvedBy: adminId,
-          approvedAt: new Date()
-        }
-      }),
-      db.user.update({
-        where: { id: deposit.userId },
-        data: { balance: { increment: deposit.amount } }
-      }),
-      db.transaction.create({
-        data: {
-          userId: deposit.userId,
-          type: 'deposit',
-          amount: deposit.amount,
-          description: 'Deposit approved'
-        }
-      })
-    ]);
-  } else {
-    // Get or create mining plan
-    let plan = await db.miningPlan.findFirst();
-    if (!plan) {
-      plan = await db.miningPlan.create({
-        data: {
-          name: 'Starter Mining Plan',
-          dailyProfit: 4,
-          duration: 30,
-          minInvest: 10,
-          maxInvest: 100000
-        }
-      });
-    }
-
-    // Start mining
-    const dailyProfit = deposit.amount * (plan.dailyProfit / 100);
-    const expiresAt = new Date(Date.now() + plan.duration * 24 * 60 * 60 * 1000);
-
-    await db.$transaction([
-      db.deposit.update({
-        where: { id: depositId },
-        data: {
-          status: 'approved',
-          approvedBy: adminId,
-          approvedAt: new Date()
-        }
-      }),
-      db.userMining.create({
-        data: {
-          userId: deposit.userId,
-          planId: plan.id,
-          investment: deposit.amount,
-          dailyProfit,
-          expiresAt,
-          status: 'active'
-        }
-      }),
-      db.transaction.create({
-        data: {
-          userId: deposit.userId,
-          type: 'deposit',
-          amount: deposit.amount,
-          description: 'Mining started'
-        }
-      })
-    ]);
-  }
+  // Update deposit status and add balance to user
+  await db.$transaction([
+    db.deposit.update({
+      where: { id: depositId },
+      data: {
+        status: 'approved',
+        approvedBy: adminId,
+        approvedAt: new Date()
+      }
+    }),
+    db.user.update({
+      where: { id: deposit.userId },
+      data: { balance: { increment: deposit.amount } }
+    }),
+    db.transaction.create({
+      data: {
+        userId: deposit.userId,
+        type: 'deposit',
+        amount: deposit.amount,
+        status: 'completed',
+        description: 'Deposit approved'
+      }
+    })
+  ]);
 
   // Handle referral commissions
   await handleReferralCommissions(deposit.userId, deposit.amount);
 
-  return NextResponse.json({ success: true, message: 'Deposit approved' });
+  return NextResponse.json({ 
+    success: true, 
+    message: 'Deposit approved successfully' 
+  });
 }
 
 // Reject deposit
@@ -279,7 +273,7 @@ async function handleRejectDeposit(depositId: string) {
 
   if (!deposit || deposit.status !== 'pending') {
     return NextResponse.json(
-      { error: 'Deposit not found or already processed' },
+      { success: false, error: 'Deposit not found or already processed' },
       { status: 400 }
     );
   }
@@ -289,7 +283,10 @@ async function handleRejectDeposit(depositId: string) {
     data: { status: 'rejected' }
   });
 
-  return NextResponse.json({ success: true, message: 'Deposit rejected' });
+  return NextResponse.json({ 
+    success: true, 
+    message: 'Deposit rejected' 
+  });
 }
 
 // Approve withdrawal
@@ -300,7 +297,7 @@ async function handleApproveWithdrawal(withdrawalId: string, adminId: string) {
 
   if (!withdrawal || withdrawal.status !== 'pending') {
     return NextResponse.json(
-      { error: 'Withdrawal not found or already processed' },
+      { success: false, error: 'Withdrawal not found or already processed' },
       { status: 400 }
     );
   }
@@ -319,12 +316,16 @@ async function handleApproveWithdrawal(withdrawalId: string, adminId: string) {
         userId: withdrawal.userId,
         type: 'withdrawal',
         amount: withdrawal.amount,
+        status: 'completed',
         description: 'Withdrawal approved'
       }
     })
   ]);
 
-  return NextResponse.json({ success: true, message: 'Withdrawal approved' });
+  return NextResponse.json({ 
+    success: true, 
+    message: 'Withdrawal approved successfully' 
+  });
 }
 
 // Reject withdrawal
@@ -335,12 +336,12 @@ async function handleRejectWithdrawal(withdrawalId: string) {
 
   if (!withdrawal || withdrawal.status !== 'pending') {
     return NextResponse.json(
-      { error: 'Withdrawal not found or already processed' },
+      { success: false, error: 'Withdrawal not found or already processed' },
       { status: 400 }
     );
   }
 
-  // Refund balance
+  // Refund balance to user
   await db.$transaction([
     db.withdrawal.update({
       where: { id: withdrawalId },
@@ -352,7 +353,10 @@ async function handleRejectWithdrawal(withdrawalId: string) {
     })
   ]);
 
-  return NextResponse.json({ success: true, message: 'Withdrawal rejected and balance refunded' });
+  return NextResponse.json({ 
+    success: true, 
+    message: 'Withdrawal rejected and balance refunded' 
+  });
 }
 
 // Update settings
@@ -368,7 +372,7 @@ async function handleUpdateSettings(data: {
   if (!settings) {
     settings = await db.adminSettings.create({
       data: {
-        siteName: data.siteName || 'Shiba Mining Lab',
+        siteName: data.siteName || 'USDT Mining Lab',
         depositWallet: data.depositWallet || '',
         minDeposit: data.minDeposit || 10,
         minWithdraw: data.minWithdraw || 10,
@@ -382,7 +386,7 @@ async function handleUpdateSettings(data: {
     });
   }
 
-  return NextResponse.json({ success: true, settings });
+  return NextResponse.json({ success: true, data: settings });
 }
 
 // Toggle user status
@@ -393,7 +397,7 @@ async function handleToggleUser(userId: string) {
 
   if (!user) {
     return NextResponse.json(
-      { error: 'User not found' },
+      { success: false, error: 'User not found' },
       { status: 404 }
     );
   }
@@ -403,10 +407,13 @@ async function handleToggleUser(userId: string) {
     data: { isActive: !user.isActive }
   });
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ 
+    success: true, 
+    message: `User ${!user.isActive ? 'activated' : 'deactivated'}` 
+  });
 }
 
-// Handle referral commissions
+// Handle referral commissions (3-level: 5%, 2%, 1% = total 8%)
 async function handleReferralCommissions(userId: string, amount: number) {
   const commissions = [0.05, 0.02, 0.01]; // 5%, 2%, 1%
 
@@ -435,42 +442,11 @@ async function handleReferralCommissions(userId: string, amount: number) {
             userId: referral.referrerId,
             type: 'referral_bonus',
             amount: commission,
-            description: `Level ${level} referral bonus`
+            status: 'completed',
+            description: `Level ${level} referral bonus from deposit`
           }
         })
       ]);
     }
   }
-}
-
-// Create mining plan for user (admin creates manual mining)
-async function handleCreateMiningPlan(userId: string, data: { investment: number }) {
-  let plan = await db.miningPlan.findFirst();
-  if (!plan) {
-    plan = await db.miningPlan.create({
-      data: {
-        name: 'Starter Mining Plan',
-        dailyProfit: 4,
-        duration: 30,
-        minInvest: 10,
-        maxInvest: 100000
-      }
-    });
-  }
-
-  const dailyProfit = data.investment * (plan.dailyProfit / 100);
-  const expiresAt = new Date(Date.now() + plan.duration * 24 * 60 * 60 * 1000);
-
-  await db.userMining.create({
-    data: {
-      userId,
-      planId: plan.id,
-      investment: data.investment,
-      dailyProfit,
-      expiresAt,
-      status: 'active'
-    }
-  });
-
-  return NextResponse.json({ success: true, message: 'Mining plan created' });
 }
