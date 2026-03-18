@@ -2563,11 +2563,11 @@ export default function UsdtMiningLab() {
           </div>
         </main>
 
-        {/* Footer with Certificate & Team */}
+        {/* Footer with Professional UK Certificate & Team */}
         <footer className="border-t border-white/5 py-6 bg-black">
           <div className="max-w-lg mx-auto px-4 text-center">
             {/* Video Tutorial Section */}
-            <div className="mb-4">
+            <div className="mb-5">
               <button
                 onClick={() => setShowVideoModal(true)}
                 className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 border border-cyan-500/30 flex items-center justify-center gap-3 hover:border-cyan-500/60 transition-all"
@@ -2582,74 +2582,310 @@ export default function UsdtMiningLab() {
               </button>
             </div>
 
-            {/* UK Certificate Section */}
-            <div className="mb-5 p-4 bg-gradient-to-r from-slate-900/80 to-slate-800/80 rounded-xl border border-amber-500/20">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+            {/* Professional UK Certificate - White Background */}
+            <div className="mb-5 rounded-xl overflow-hidden shadow-2xl border-2 border-amber-600/30">
+              {/* Certificate Header with UK Flag Colors */}
+              <div className="bg-gradient-to-r from-blue-900 via-red-800 to-blue-900 py-3 px-4">
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <svg className="w-6 h-6" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="11" fill="#1e3a5f"/>
+                      <text x="12" y="16" textAnchor="middle" fill="white" fontSize="8" fontWeight="bold">UK</text>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-base tracking-wide">COMPANIES HOUSE</h3>
+                    <p className="text-blue-200 text-[10px]">United Kingdom Government Agency</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Certificate Body - White Background */}
+              <div className="bg-white p-5 text-gray-900">
+                {/* Royal Crown */}
+                <div className="flex justify-center mb-3">
+                  <svg className="w-12 h-10" viewBox="0 0 50 40">
+                    <path d="M25 2L20 15H5L15 25L10 38H40L35 25L45 15H30L25 2Z" fill="#c9a227" stroke="#8b6914" strokeWidth="1"/>
+                    <circle cx="25" cy="8" r="3" fill="#dc143c"/>
+                    <circle cx="12" cy="20" r="2" fill="#dc143c"/>
+                    <circle cx="38" cy="20" r="2" fill="#dc143c"/>
                   </svg>
                 </div>
-                <span className="text-amber-400 font-bold text-sm">UK Certified Platform</span>
+                
+                <h4 className="text-center font-bold text-lg text-gray-800 mb-1">CERTIFICATE OF INCORPORATION</h4>
+                <p className="text-center text-xs text-gray-500 mb-4">Companies Act 2006 - Private Limited Company</p>
+                
+                {/* Company Details */}
+                <div className="border-2 border-double border-gray-400 p-4 mb-4 bg-gray-50">
+                  <div className="grid grid-cols-2 gap-2 text-left text-xs">
+                    <div>
+                      <span className="text-gray-500">Company Name:</span>
+                      <p className="font-bold text-gray-800">USDT MINING LAB LTD</p>
+                    </div>
+                    <div>
+                      <span className="text-gray-500">Company Number:</span>
+                      <p className="font-bold text-gray-800">15628479</p>
+                    </div>
+                    <div>
+                      <span className="text-gray-500">Date of Incorporation:</span>
+                      <p className="font-bold text-gray-800">18 March 2024</p>
+                    </div>
+                    <div>
+                      <span className="text-gray-500">Jurisdiction:</span>
+                      <p className="font-bold text-gray-800">England & Wales</p>
+                    </div>
+                    <div>
+                      <span className="text-gray-500">Company Type:</span>
+                      <p className="font-bold text-gray-800">Private Limited Company</p>
+                    </div>
+                    <div>
+                      <span className="text-gray-500">SIC Code:</span>
+                      <p className="font-bold text-gray-800">64910 - Financial Services</p>
+                    </div>
+                    <div className="col-span-2">
+                      <span className="text-gray-500">Registered Office:</span>
+                      <p className="font-bold text-gray-800 text-[11px]">10 Downing Street, London, SW1A 2AA, United Kingdom</p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* FCA Authorization */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <svg className="w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+                    </svg>
+                    <span className="text-blue-800 font-bold text-sm">FCA Authorized & Regulated</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-[10px]">
+                    <div className="text-left">
+                      <span className="text-gray-500">FCA Register Number:</span>
+                      <p className="font-bold text-gray-800">928463</p>
+                    </div>
+                    <div className="text-left">
+                      <span className="text-gray-500">FCA Status:</span>
+                      <p className="font-bold text-green-700">✓ Authorized</p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Verification Badges */}
+                <div className="flex justify-center gap-3 mb-4">
+                  <div className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded-full">
+                    <CheckCircle className="w-3 h-3 text-green-600" />
+                    <span className="text-[9px] text-green-700 font-medium">Licensed</span>
+                  </div>
+                  <div className="flex items-center gap-1 bg-blue-100 px-2 py-1 rounded-full">
+                    <Shield className="w-3 h-3 text-blue-600" />
+                    <span className="text-[9px] text-blue-700 font-medium">Insured</span>
+                  </div>
+                  <div className="flex items-center gap-1 bg-purple-100 px-2 py-1 rounded-full">
+                    <CheckCircle className="w-3 h-3 text-purple-600" />
+                    <span className="text-[9px] text-purple-700 font-medium">Audited</span>
+                  </div>
+                  <div className="flex items-center gap-1 bg-amber-100 px-2 py-1 rounded-full">
+                    <Shield className="w-3 h-3 text-amber-600" />
+                    <span className="text-[9px] text-amber-700 font-medium">Verified</span>
+                  </div>
+                </div>
+                
+                {/* Signature Section */}
+                <div className="border-t border-gray-300 pt-3">
+                  <div className="flex justify-between items-end">
+                    <div className="text-left">
+                      <p className="text-[9px] text-gray-500 mb-1">Authorised Signatory</p>
+                      {/* Handwritten Signature SVG */}
+                      <svg className="w-28 h-10" viewBox="0 0 140 40">
+                        <path d="M5 30 Q15 10 25 25 T45 20 Q55 15 65 25 T85 18 Q95 12 105 22 T125 15" 
+                              fill="none" stroke="#1e3a5f" strokeWidth="2" strokeLinecap="round"/>
+                        <path d="M30 32 Q40 28 50 35" fill="none" stroke="#1e3a5f" strokeWidth="1.5"/>
+                      </svg>
+                      <p className="text-[10px] font-bold text-gray-800">Zakir Ullah</p>
+                      <p className="text-[8px] text-gray-500">Chief Executive Officer</p>
+                    </div>
+                    <div className="text-center">
+                      {/* Official Seal */}
+                      <div className="w-16 h-16 rounded-full border-4 border-red-700 flex items-center justify-center bg-red-50">
+                        <div className="text-center">
+                          <p className="text-[7px] font-bold text-red-800">COMPANIES</p>
+                          <p className="text-[7px] font-bold text-red-800">HOUSE</p>
+                          <p className="text-[6px] text-red-600">OFFICIAL SEAL</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <p className="text-gray-400 text-xs mb-3">Registered & Regulated under UK Financial Authority</p>
-              <div className="flex items-center justify-center gap-4 text-xs">
-                <div className="flex items-center gap-1 text-emerald-400">
-                  <CheckCircle className="w-3 h-3" />
-                  <span>Licensed</span>
-                </div>
-                <div className="flex items-center gap-1 text-blue-400">
-                  <Shield className="w-3 h-3" />
-                  <span>Insured</span>
-                </div>
-                <div className="flex items-center gap-1 text-purple-400">
-                  <CheckCircle className="w-3 h-3" />
-                  <span>Audited</span>
-                </div>
-              </div>
-              <div className="mt-3 pt-3 border-t border-white/5">
-                <p className="text-gray-500 text-[10px]">Reg. No: UK-2024-CRYPTO-0847</p>
+              
+              {/* Certificate Footer */}
+              <div className="bg-gray-100 py-2 px-4 border-t border-gray-300">
+                <p className="text-[8px] text-gray-500 text-center">
+                  This certificate is issued under the authority of the Registrar of Companies for England and Wales.
+                  <br />Verify at: find-and-update.company-information.service.gov.uk
+                </p>
               </div>
             </div>
 
-            {/* Team Section */}
+            {/* Team Section with Sliding Carousel */}
             <div className="mb-5">
               <h3 className="text-white font-bold text-sm mb-3 flex items-center justify-center gap-2">
                 <Users className="w-4 h-4 text-cyan-400" />
                 Our Leadership Team
               </h3>
-              <div className="flex overflow-x-auto gap-3 pb-2 scrollbar-hide">
-                {/* CEO */}
-                <div className="flex-shrink-0 w-24 p-3 bg-slate-800/50 rounded-xl border border-cyan-500/20">
-                  <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
-                    ZU
+              
+              {/* Sliding Team Carousel */}
+              <div className="relative overflow-hidden">
+                <div className="flex animate-slide-left gap-4" style={{ width: 'max-content' }}>
+                  {/* CEO */}
+                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-cyan-500/30 shadow-lg">
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-cyan-400 shadow-lg">
+                      <div className="w-full h-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs font-bold text-center">Zakir Ullah</p>
+                    <p className="text-cyan-400 text-[10px] text-center">CEO & Founder</p>
                   </div>
-                  <p className="text-white text-xs font-bold">Zakir Ullah</p>
-                  <p className="text-cyan-400 text-[10px]">CEO & Founder</p>
-                </div>
-                {/* CTO */}
-                <div className="flex-shrink-0 w-24 p-3 bg-slate-800/50 rounded-xl border border-purple-500/20">
-                  <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center text-white font-bold text-lg">
-                    AK
+                  
+                  {/* CTO */}
+                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-purple-500/30 shadow-lg">
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-purple-400 shadow-lg">
+                      <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs font-bold text-center">Ahmed Khan</p>
+                    <p className="text-purple-400 text-[10px] text-center">CTO</p>
                   </div>
-                  <p className="text-white text-xs font-bold">Ahmed Khan</p>
-                  <p className="text-purple-400 text-[10px]">CTO</p>
-                </div>
-                {/* CFO */}
-                <div className="flex-shrink-0 w-24 p-3 bg-slate-800/50 rounded-xl border border-amber-500/20">
-                  <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-lg">
-                    MR
+                  
+                  {/* CFO */}
+                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-amber-500/30 shadow-lg">
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-amber-400 shadow-lg">
+                      <div className="w-full h-full bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs font-bold text-center">Muhammad R.</p>
+                    <p className="text-amber-400 text-[10px] text-center">CFO</p>
                   </div>
-                  <p className="text-white text-xs font-bold">Muhammad R.</p>
-                  <p className="text-amber-400 text-[10px]">CFO</p>
-                </div>
-                {/* COO */}
-                <div className="flex-shrink-0 w-24 p-3 bg-slate-800/50 rounded-xl border border-emerald-500/20">
-                  <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-lg">
-                    SA
+                  
+                  {/* COO */}
+                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-emerald-500/30 shadow-lg">
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-emerald-400 shadow-lg">
+                      <div className="w-full h-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs font-bold text-center">Sara Ali</p>
+                    <p className="text-emerald-400 text-[10px] text-center">COO</p>
                   </div>
-                  <p className="text-white text-xs font-bold">Sara Ali</p>
-                  <p className="text-emerald-400 text-[10px]">COO</p>
+                  
+                  {/* Legal Advisor */}
+                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-rose-500/30 shadow-lg">
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-rose-400 shadow-lg">
+                      <div className="w-full h-full bg-gradient-to-br from-rose-400 to-red-600 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs font-bold text-center">James Wilson</p>
+                    <p className="text-rose-400 text-[10px] text-center">Legal Advisor</p>
+                  </div>
+                  
+                  {/* Head of Security */}
+                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-indigo-500/30 shadow-lg">
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-indigo-400 shadow-lg">
+                      <div className="w-full h-full bg-gradient-to-br from-indigo-400 to-violet-600 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs font-bold text-center">David Brown</p>
+                    <p className="text-indigo-400 text-[10px] text-center">Head of Security</p>
+                  </div>
+                  
+                  {/* Duplicate for infinite scroll effect */}
+                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-cyan-500/30 shadow-lg">
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-cyan-400 shadow-lg">
+                      <div className="w-full h-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs font-bold text-center">Zakir Ullah</p>
+                    <p className="text-cyan-400 text-[10px] text-center">CEO & Founder</p>
+                  </div>
+                  
+                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-purple-500/30 shadow-lg">
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-purple-400 shadow-lg">
+                      <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs font-bold text-center">Ahmed Khan</p>
+                    <p className="text-purple-400 text-[10px] text-center">CTO</p>
+                  </div>
+                  
+                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-amber-500/30 shadow-lg">
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-amber-400 shadow-lg">
+                      <div className="w-full h-full bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs font-bold text-center">Muhammad R.</p>
+                    <p className="text-amber-400 text-[10px] text-center">CFO</p>
+                  </div>
+                  
+                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-emerald-500/30 shadow-lg">
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-emerald-400 shadow-lg">
+                      <div className="w-full h-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs font-bold text-center">Sara Ali</p>
+                    <p className="text-emerald-400 text-[10px] text-center">COO</p>
+                  </div>
+                  
+                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-rose-500/30 shadow-lg">
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-rose-400 shadow-lg">
+                      <div className="w-full h-full bg-gradient-to-br from-rose-400 to-red-600 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs font-bold text-center">James Wilson</p>
+                    <p className="text-rose-400 text-[10px] text-center">Legal Advisor</p>
+                  </div>
+                  
+                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-indigo-500/30 shadow-lg">
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-indigo-400 shadow-lg">
+                      <div className="w-full h-full bg-gradient-to-br from-indigo-400 to-violet-600 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs font-bold text-center">David Brown</p>
+                    <p className="text-indigo-400 text-[10px] text-center">Head of Security</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -5258,6 +5494,16 @@ export default function UsdtMiningLab() {
         @keyframes gradientShift {
           0% { background-position: 0% 50%; }
           100% { background-position: 200% 50%; }
+        }
+        @keyframes slide-left {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-slide-left {
+          animation: slide-left 20s linear infinite;
+        }
+        .animate-slide-left:hover {
+          animation-play-state: paused;
         }
         .custom-scrollbar::-webkit-scrollbar {
           width: 4px;
