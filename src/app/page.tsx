@@ -2555,162 +2555,177 @@ export default function UsdtMiningLab() {
                   </div>
                 </div>
                 
-                {/* UK Leadership Team Section - Overlay on Certificate */}
-                <div className="mb-3 bg-gradient-to-r from-slate-100 to-slate-50 rounded-lg p-3 border border-gray-200">
-                  <h5 className="text-center text-gray-700 font-bold text-xs mb-2 flex items-center justify-center gap-1">
-                    <Crown className="w-3 h-3 text-amber-500" />
-                    UK Leadership Team
+                {/* UK Leadership Team Section - CENTER of Certificate */}
+                <div className="my-4 bg-gradient-to-r from-blue-50 via-white to-blue-50 rounded-xl p-4 border-2 border-blue-200 shadow-inner">
+                  <h5 className="text-center text-gray-800 font-bold text-sm mb-3 flex items-center justify-center gap-2">
+                    <Crown className="w-4 h-4 text-amber-500" />
+                    UK LEADERSHIP TEAM
+                    <Crown className="w-4 h-4 text-amber-500" />
                   </h5>
                   
                   {/* Sliding Team Carousel - Right to Left */}
-                  <div className="relative overflow-hidden rounded-lg">
-                    <div className="flex animate-slide-left gap-3 py-1" style={{ width: 'max-content' }}>
+                  <div className="relative overflow-hidden rounded-lg bg-white/80 py-2">
+                    <div className="flex animate-slide-left gap-4" style={{ width: 'max-content' }}>
                       {/* CEO - William Charles Anderson */}
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-cyan-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-cyan-400 shadow-md">
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-cyan-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-cyan-500 shadow-lg">
                           <img 
                             src="https://i.pravatar.cc/150?img=68" 
                             alt="William Anderson - CEO" 
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">William C. Anderson</p>
-                        <p className="text-cyan-600 text-[8px] text-center font-medium">CEO & Founder</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">William C. Anderson</p>
+                        <p className="text-cyan-600 text-[9px] text-center font-semibold">CEO & Founder</p>
+                        <p className="text-gray-400 text-[7px] text-center">London, UK</p>
                       </div>
                       
                       {/* CTO - Oliver James Thompson */}
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-purple-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-purple-400 shadow-md">
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-purple-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-purple-500 shadow-lg">
                           <img 
                             src="https://i.pravatar.cc/150?img=52" 
                             alt="Oliver Thompson - CTO" 
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">Oliver J. Thompson</p>
-                        <p className="text-purple-600 text-[8px] text-center font-medium">CTO</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">Oliver J. Thompson</p>
+                        <p className="text-purple-600 text-[9px] text-center font-semibold">Chief Technology Officer</p>
+                        <p className="text-gray-400 text-[7px] text-center">Manchester, UK</p>
                       </div>
                       
                       {/* CFO - Charlotte Elizabeth Wright */}
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-amber-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-amber-400 shadow-md">
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-amber-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-amber-500 shadow-lg">
                           <img 
                             src="https://i.pravatar.cc/150?img=45" 
                             alt="Charlotte Wright - CFO" 
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">Charlotte E. Wright</p>
-                        <p className="text-amber-600 text-[8px] text-center font-medium">CFO</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">Charlotte E. Wright</p>
+                        <p className="text-amber-600 text-[9px] text-center font-semibold">Chief Financial Officer</p>
+                        <p className="text-gray-400 text-[7px] text-center">Edinburgh, UK</p>
                       </div>
                       
                       {/* COO - Henry George Mitchell */}
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-emerald-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-emerald-400 shadow-md">
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-emerald-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-emerald-500 shadow-lg">
                           <img 
                             src="https://i.pravatar.cc/150?img=59" 
                             alt="Henry Mitchell - COO" 
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">Henry G. Mitchell</p>
-                        <p className="text-emerald-600 text-[8px] text-center font-medium">COO</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">Henry G. Mitchell</p>
+                        <p className="text-emerald-600 text-[9px] text-center font-semibold">Chief Operating Officer</p>
+                        <p className="text-gray-400 text-[7px] text-center">Birmingham, UK</p>
                       </div>
                       
                       {/* Legal Advisor - Victoria Anne Roberts */}
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-rose-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-rose-400 shadow-md">
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-rose-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-rose-500 shadow-lg">
                           <img 
                             src="https://i.pravatar.cc/150?img=32" 
                             alt="Victoria Roberts - Legal" 
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">Victoria A. Roberts</p>
-                        <p className="text-rose-600 text-[8px] text-center font-medium">Legal Advisor</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">Victoria A. Roberts</p>
+                        <p className="text-rose-600 text-[9px] text-center font-semibold">Legal Advisor</p>
+                        <p className="text-gray-400 text-[7px] text-center">London, UK</p>
                       </div>
                       
                       {/* Head of Security - Edward Thomas Davis */}
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-indigo-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-indigo-400 shadow-md">
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-indigo-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-indigo-500 shadow-lg">
                           <img 
                             src="https://i.pravatar.cc/150?img=61" 
                             alt="Edward Davis - Security" 
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">Edward T. Davis</p>
-                        <p className="text-indigo-600 text-[8px] text-center font-medium">Head of Security</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">Edward T. Davis</p>
+                        <p className="text-indigo-600 text-[9px] text-center font-semibold">Head of Security</p>
+                        <p className="text-gray-400 text-[7px] text-center">Cambridge, UK</p>
                       </div>
                       
                       {/* Head of Operations - Amelia Sarah Clarke */}
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-pink-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-pink-400 shadow-md">
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-pink-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-pink-500 shadow-lg">
                           <img 
                             src="https://i.pravatar.cc/150?img=26" 
                             alt="Amelia Clarke - Operations" 
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">Amelia S. Clarke</p>
-                        <p className="text-pink-600 text-[8px] text-center font-medium">Head of Ops</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">Amelia S. Clarke</p>
+                        <p className="text-pink-600 text-[9px] text-center font-semibold">Head of Operations</p>
+                        <p className="text-gray-400 text-[7px] text-center">Oxford, UK</p>
                       </div>
                       
-                      {/* Duplicates for infinite scroll */}
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-cyan-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-cyan-400 shadow-md">
-                          <img src="https://i.pravatar.cc/150?img=68" alt="William Anderson - CEO" className="w-full h-full object-cover" />
+                      {/* Duplicate cards for infinite scroll */}
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-cyan-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-cyan-500 shadow-lg">
+                          <img src="https://i.pravatar.cc/150?img=68" alt="William Anderson - CEO" className="w-full h-full object-cover"/>
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">William C. Anderson</p>
-                        <p className="text-cyan-600 text-[8px] text-center font-medium">CEO & Founder</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">William C. Anderson</p>
+                        <p className="text-cyan-600 text-[9px] text-center font-semibold">CEO & Founder</p>
+                        <p className="text-gray-400 text-[7px] text-center">London, UK</p>
                       </div>
                       
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-purple-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-purple-400 shadow-md">
-                          <img src="https://i.pravatar.cc/150?img=52" alt="Oliver Thompson - CTO" className="w-full h-full object-cover" />
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-purple-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-purple-500 shadow-lg">
+                          <img src="https://i.pravatar.cc/150?img=52" alt="Oliver Thompson - CTO" className="w-full h-full object-cover"/>
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">Oliver J. Thompson</p>
-                        <p className="text-purple-600 text-[8px] text-center font-medium">CTO</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">Oliver J. Thompson</p>
+                        <p className="text-purple-600 text-[9px] text-center font-semibold">CTO</p>
+                        <p className="text-gray-400 text-[7px] text-center">Manchester, UK</p>
                       </div>
                       
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-amber-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-amber-400 shadow-md">
-                          <img src="https://i.pravatar.cc/150?img=45" alt="Charlotte Wright - CFO" className="w-full h-full object-cover" />
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-amber-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-amber-500 shadow-lg">
+                          <img src="https://i.pravatar.cc/150?img=45" alt="Charlotte Wright - CFO" className="w-full h-full object-cover"/>
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">Charlotte E. Wright</p>
-                        <p className="text-amber-600 text-[8px] text-center font-medium">CFO</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">Charlotte E. Wright</p>
+                        <p className="text-amber-600 text-[9px] text-center font-semibold">CFO</p>
+                        <p className="text-gray-400 text-[7px] text-center">Edinburgh, UK</p>
                       </div>
                       
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-emerald-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-emerald-400 shadow-md">
-                          <img src="https://i.pravatar.cc/150?img=59" alt="Henry Mitchell - COO" className="w-full h-full object-cover" />
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-emerald-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-emerald-500 shadow-lg">
+                          <img src="https://i.pravatar.cc/150?img=59" alt="Henry Mitchell - COO" className="w-full h-full object-cover"/>
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">Henry G. Mitchell</p>
-                        <p className="text-emerald-600 text-[8px] text-center font-medium">COO</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">Henry G. Mitchell</p>
+                        <p className="text-emerald-600 text-[9px] text-center font-semibold">COO</p>
+                        <p className="text-gray-400 text-[7px] text-center">Birmingham, UK</p>
                       </div>
                       
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-rose-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-rose-400 shadow-md">
-                          <img src="https://i.pravatar.cc/150?img=32" alt="Victoria Roberts - Legal" className="w-full h-full object-cover" />
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-rose-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-rose-500 shadow-lg">
+                          <img src="https://i.pravatar.cc/150?img=32" alt="Victoria Roberts - Legal" className="w-full h-full object-cover"/>
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">Victoria A. Roberts</p>
-                        <p className="text-rose-600 text-[8px] text-center font-medium">Legal Advisor</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">Victoria A. Roberts</p>
+                        <p className="text-rose-600 text-[9px] text-center font-semibold">Legal Advisor</p>
+                        <p className="text-gray-400 text-[7px] text-center">London, UK</p>
                       </div>
                       
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-indigo-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-indigo-400 shadow-md">
-                          <img src="https://i.pravatar.cc/150?img=61" alt="Edward Davis - Security" className="w-full h-full object-cover" />
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-indigo-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-indigo-500 shadow-lg">
+                          <img src="https://i.pravatar.cc/150?img=61" alt="Edward Davis - Security" className="w-full h-full object-cover"/>
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">Edward T. Davis</p>
-                        <p className="text-indigo-600 text-[8px] text-center font-medium">Head of Security</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">Edward T. Davis</p>
+                        <p className="text-indigo-600 text-[9px] text-center font-semibold">Head of Security</p>
+                        <p className="text-gray-400 text-[7px] text-center">Cambridge, UK</p>
                       </div>
                       
-                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-pink-200 shadow-sm team-card-glow">
-                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-pink-400 shadow-md">
-                          <img src="https://i.pravatar.cc/150?img=26" alt="Amelia Clarke - Operations" className="w-full h-full object-cover" />
+                      <div className="flex-shrink-0 w-24 p-3 bg-white rounded-xl border-2 border-pink-300 shadow-lg team-card-glow">
+                        <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-3 border-pink-500 shadow-lg">
+                          <img src="https://i.pravatar.cc/150?img=26" alt="Amelia Clarke - Operations" className="w-full h-full object-cover"/>
                         </div>
-                        <p className="text-gray-800 text-[9px] font-bold text-center">Amelia S. Clarke</p>
-                        <p className="text-pink-600 text-[8px] text-center font-medium">Head of Ops</p>
+                        <p className="text-gray-800 text-[10px] font-bold text-center">Amelia S. Clarke</p>
+                        <p className="text-pink-600 text-[9px] text-center font-semibold">Head of Operations</p>
+                        <p className="text-gray-400 text-[7px] text-center">Oxford, UK</p>
                       </div>
                     </div>
                   </div>
