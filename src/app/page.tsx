@@ -2555,13 +2555,19 @@ export default function UsdtMiningLab() {
                   </div>
                 </div>
                 
-                {/* UK Leadership Team Section - CENTER of Certificate */}
-                <div className="my-4 bg-gradient-to-r from-blue-50 via-white to-blue-50 rounded-xl p-4 border-2 border-blue-200 shadow-inner">
-                  <h5 className="text-center text-gray-800 font-bold text-sm mb-3 flex items-center justify-center gap-2">
-                    <Crown className="w-4 h-4 text-amber-500" />
-                    UK LEADERSHIP TEAM
-                    <Crown className="w-4 h-4 text-amber-500" />
-                  </h5>
+                {/* UK Leadership Team Section - CENTER of Certificate - v2 */}
+                <div className="my-4 bg-gradient-to-r from-blue-50 via-white to-blue-50 rounded-xl p-4 border-2 border-blue-300 shadow-lg">
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <div className="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center">
+                      <Crown className="w-4 h-4 text-amber-600" />
+                    </div>
+                    <h5 className="text-gray-800 font-bold text-sm tracking-wide">
+                      UK LEADERSHIP TEAM
+                    </h5>
+                    <div className="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center">
+                      <Crown className="w-4 h-4 text-amber-600" />
+                    </div>
+                  </div>
                   
                   {/* Sliding Team Carousel - Right to Left */}
                   <div className="relative overflow-hidden rounded-lg bg-white/80 py-2">
