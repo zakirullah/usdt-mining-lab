@@ -3,10 +3,13 @@ import { db } from '@/lib/db';
 
 export async function GET() {
   try {
+    console.log('Stats API: Starting to fetch data...');
+    
     // Get total users
     const totalUsers = await db.user.count({
       where: { role: 'user' }
     });
+    console.log('Stats API: totalUsers =', totalUsers);
 
     // Get total deposits amount
     const deposits = await db.deposit.aggregate({
@@ -14,6 +17,7 @@ export async function GET() {
       _sum: { amount: true }
     });
     const totalDeposits = deposits._sum.amount || 0;
+    console.log('Stats API: totalDeposits =', totalDeposits);
 
     // Get total withdrawals amount
     const withdrawals = await db.withdrawal.aggregate({
@@ -21,17 +25,20 @@ export async function GET() {
       _sum: { amount: true }
     });
     const totalWithdrawals = withdrawals._sum.amount || 0;
+    console.log('Stats API: totalWithdrawals =', totalWithdrawals);
 
     // Get active miners
     const activeMiners = await db.userMining.count({
       where: { status: 'active' }
     });
+    console.log('Stats API: activeMiners =', activeMiners);
 
     // Get total profit distributed (sum of all mining totalEarned)
     const profitAggregate = await db.userMining.aggregate({
       _sum: { totalEarned: true }
     });
     const totalProfitDistributed = profitAggregate._sum.totalEarned || 0;
+    console.log('Stats API: totalProfitDistributed =', totalProfitDistributed);
 
     // Get online users (sessions in last 5 minutes)
     const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
@@ -40,6 +47,7 @@ export async function GET() {
         createdAt: { gte: fiveMinutesAgo }
       }
     });
+    console.log('Stats API: onlineUsers =', onlineUsers);
 
     // Get new users today
     const today = new Date();
@@ -49,6 +57,7 @@ export async function GET() {
         createdAt: { gte: today }
       }
     });
+    console.log('Stats API: newUsersToday =', newUsersToday);
 
     // Today deposits
     const todayDeposits = await db.deposit.aggregate({
@@ -77,6 +86,8 @@ export async function GET() {
       _sum: { amount: true }
     });
 
+    console.log('Stats API: Successfully fetched all data');
+    
     return NextResponse.json({
       totalUsers,
       totalDeposits,
@@ -104,7 +115,8 @@ export async function GET() {
       todayDeposits: 0,
       todayWithdrawals: 0,
       todayProfit: 0,
-      isRealData: false
+      isRealData: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
     });
   }
 }
