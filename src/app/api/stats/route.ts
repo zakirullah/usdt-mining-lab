@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET() {
   const startTime = Date.now();
@@ -85,12 +86,12 @@ export async function GET() {
       // Today visitors
       db.visitor.count({
         where: { createdAt: { gte: today } }
-      }),
+      }).catch(() => 0),
       
       // Online visitors (visited in last 5 minutes)
       db.visitor.count({
         where: { lastVisit: { gte: fiveMinutesAgo } }
-      })
+      }).catch(() => 0)
     ]);
     
     const totalDeposits = depositsAggregate._sum.amount || 0;
