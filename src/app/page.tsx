@@ -332,41 +332,23 @@ export default function UsdtMiningLab() {
   const [currentProfit, setCurrentProfit] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [platformStats, setPlatformStats] = useState({
-    totalUsers: 15847,
-    totalDeposits: 2847593,
-    totalWithdrawals: 1923847,
-    profitPaid: 892456,
-    activeMiners: 3456,
-    onlineUsers: 1847
+    totalUsers: 0,
+    totalDeposits: 0,
+    totalWithdrawals: 0,
+    profitPaid: 0,
+    activeMiners: 0,
+    onlineUsers: 1
   });
   const [todayStats, setTodayStats] = useState({
-    todayDeposits: 45892,
-    todayWithdrawals: 28456,
-    newUsers: 127,
-    todayProfit: 12584
+    todayDeposits: 0,
+    todayWithdrawals: 0,
+    newUsers: 0,
+    todayProfit: 0
   });
   const [calculatorAmount, setCalculatorAmount] = useState('');
   const [calculatorPlan, setCalculatorPlan] = useState<'starter' | 'pro'>('starter');
-  const [depositHistory, setDepositHistory] = useState([
-    { wallet: '0x742d...f44e', amount: 150, status: 'approved', date: '2 min ago' },
-    { wallet: '0x8a3e...b21c', amount: 500, status: 'approved', date: '5 min ago' },
-    { wallet: '0x1b4f...c93d', amount: 75, status: 'approved', date: '8 min ago' },
-    { wallet: '0x9c5a...d14e', amount: 200, status: 'approved', date: '12 min ago' },
-    { wallet: '0x2d6b...e25f', amount: 350, status: 'approved', date: '15 min ago' },
-    { wallet: '0x3e7c...f36a', amount: 1000, status: 'approved', date: '20 min ago' },
-    { wallet: '0x4f8d...a47b', amount: 250, status: 'approved', date: '25 min ago' },
-    { wallet: '0x5a9e...b58c', amount: 180, status: 'approved', date: '30 min ago' },
-  ]);
-  const [withdrawalHistory, setWithdrawalHistory] = useState([
-    { wallet: '0x6b0f...c69d', amount: 82, status: 'approved', date: '1 min ago' },
-    { wallet: '0x7c1g...d70e', amount: 144, status: 'approved', date: '3 min ago' },
-    { wallet: '0x8d2h...e81f', amount: 95, status: 'approved', date: '7 min ago' },
-    { wallet: '0x9e3i...f92g', amount: 120, status: 'approved', date: '10 min ago' },
-    { wallet: '0x0f4j...a03h', amount: 65, status: 'approved', date: '14 min ago' },
-    { wallet: '0x1a5k...b14i', amount: 180, status: 'approved', date: '18 min ago' },
-    { wallet: '0x2b6l...c25j', amount: 220, status: 'approved', date: '22 min ago' },
-    { wallet: '0x3c7m...d36k', amount: 95, status: 'approved', date: '28 min ago' },
-  ]);
+  const [depositHistory, setDepositHistory] = useState<Array<{ wallet: string; amount: number; status: string; date: string }>>([]);
+  const [withdrawalHistory, setWithdrawalHistory] = useState<Array<{ wallet: string; amount: number; status: string; date: string }>>([]);
   const [miningTimer, setMiningTimer] = useState({ elapsed: 0, remaining: 2592000 });
 
   const depositScrollRef = useRef<HTMLDivElement>(null);
@@ -537,7 +519,20 @@ export default function UsdtMiningLab() {
         const res = await fetch('/api/stats');
         if (res.ok) {
           const data = await res.json();
-          if (data.totalUsers) setPlatformStats(data);
+          setPlatformStats({
+            totalUsers: data.totalUsers || 0,
+            totalDeposits: data.totalDeposits || 0,
+            totalWithdrawals: data.totalWithdrawals || 0,
+            profitPaid: data.totalProfitDistributed || 0,
+            activeMiners: data.activeMiners || 0,
+            onlineUsers: Math.max(data.onlineUsers || 1, 1)
+          });
+          setTodayStats({
+            todayDeposits: data.todayDeposits || 0,
+            todayWithdrawals: data.todayWithdrawals || 0,
+            newUsers: data.newUsersToday || 0,
+            todayProfit: data.todayProfit || 0
+          });
         }
       } catch { /* ignore */ }
     };
@@ -579,6 +574,27 @@ export default function UsdtMiningLab() {
       } catch { /* ignore */ }
     };
     fetchBroadcast();
+  }, []);
+
+  // Fetch deposit and withdrawal history
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const res = await fetch('/api/history');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.deposits && data.deposits.length > 0) {
+            setDepositHistory(data.deposits);
+          }
+          if (data.withdrawals && data.withdrawals.length > 0) {
+            setWithdrawalHistory(data.withdrawals);
+          }
+        }
+      } catch { /* ignore */ }
+    };
+    fetchHistory();
+    const interval = setInterval(fetchHistory, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   // Auto-scroll deposit history
