@@ -492,3 +492,31 @@ body {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
 }
+
+/* Team Carousel Animation - Right to Left */
+@keyframes slide-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-slide-left {
+  animation: slide-left 30s linear infinite;
+}
+
+.animate-slide-left:hover {
+  animation-play-state: paused;
+}
+
+/* Team member card glow on hover */
+.team-card-glow {
+  transition: all 0.3s ease;
+}
+
+.team-card-glow:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.3), 0 0 60px rgba(138, 43, 226, 0.2);
+}

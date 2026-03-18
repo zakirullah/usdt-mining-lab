@@ -2490,100 +2490,14 @@ export default function UsdtMiningLab() {
               </div>
             </motion.div>
 
-            {/* Video Tutorial Section - How It Works */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.0 }}
-              className="mt-6"
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </div>
-                <h2 className="text-white font-bold text-base">How It Works</h2>
-                <span className="px-2 py-0.5 bg-red-500/20 text-red-400 text-xs font-medium rounded-full animate-pulse">Tutorial</span>
-              </div>
-              
-              {/* Animated Tutorial Video Container */}
-              <div className="relative bg-slate-900/80 border border-white/10 rounded-2xl overflow-hidden">
-                <div className="aspect-video bg-gradient-to-br from-slate-800 via-slate-900 to-black relative">
-                  {/* Animated Grid Background */}
-                  <div className="absolute inset-0 opacity-10" style={{
-                    backgroundImage: `linear-gradient(rgba(0, 212, 255, 0)px, transparent 1px), linear-gradient(90deg, rgba(1, 212, 255, 1)px, transparent 1px)`,
-                    backgroundSize: '20px 20px'
-                  }} />
-                  
-                  {/* Tutorial Steps Slideshow */}
-                  <div className="absolute inset-0 flex items-center justify-center p-4">
-                    <TutorialAnimation />
-                  </div>
-                  
-                  {/* Duration Badge */}
-                  <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/80 rounded text-xs text-white font-medium">
-                    Tutorial Guide
-                  </div>
-                </div>
-                
-                {/* Tutorial Steps List */}
-                <div className="p-4 space-y-3">
-                  {[
-                    { step: 1, title: 'How to Register', desc: 'Create your account with wallet address', icon: '📝', color: 'from-green-500 to-emerald-600' },
-                    { step: 2, title: 'How to Deposit', desc: 'Send USDT to platform wallet', icon: '💰', color: 'from-cyan-500 to-blue-600' },
-                    { step: 3, title: 'Buy Mining Plan', desc: 'Activate Starter or Pro plan', icon: '⚡', color: 'from-purple-500 to-violet-600' },
-                    { step: 4, title: 'How to Withdraw', desc: 'Request withdrawal to your wallet', icon: '🏦', color: 'from-amber-500 to-orange-600' },
-                  ].map((item, i) => (
-                    <motion.div
-                      key={item.step}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 1.2 + i * 0.1 }}
-                      className="flex items-center gap-3 p-2 rounded-xl bg-slate-800/50 hover:bg-slate-700/50 transition-colors cursor-pointer"
-                    >
-                      <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-lg shadow-lg`}>
-                        {item.icon}
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-white text-sm font-medium">{item.title}</p>
-                        <p className="text-gray-400 text-xs">{item.desc}</p>
-                      </div>
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 flex items-center justify-center">
-                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z"/>
-                        </svg>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
           </div>
         </main>
 
-        {/* Footer with Professional UK Certificate & Team */}
+        {/* Footer with Professional UK Certificate & Team Overlay */}
         <footer className="border-t border-white/5 py-6 bg-black">
           <div className="max-w-lg mx-auto px-4 text-center">
-            {/* Video Tutorial Section */}
-            <div className="mb-5">
-              <button
-                onClick={() => setShowVideoModal(true)}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 border border-cyan-500/30 flex items-center justify-center gap-3 hover:border-cyan-500/60 transition-all"
-              >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 flex items-center justify-center">
-                  <Play className="w-5 h-5 text-white ml-0.5" fill="white" />
-                </div>
-                <div className="text-left">
-                  <div className="text-white font-bold text-sm">Watch Video Tutorial</div>
-                  <div className="text-gray-400 text-xs">Learn how to use USDT Mining Lab</div>
-                </div>
-              </button>
-            </div>
-
-            {/* Professional UK Certificate - White Background */}
-            <div className="mb-5 rounded-xl overflow-hidden shadow-2xl border-2 border-amber-600/30">
+            {/* Combined Certificate with Team Overlay */}
+            <div className="mb-5 rounded-xl overflow-hidden shadow-2xl border-2 border-amber-600/30 relative">
               {/* Certificate Header with UK Flag Colors */}
               <div className="bg-gradient-to-r from-blue-900 via-red-800 to-blue-900 py-3 px-4">
                 <div className="flex items-center justify-center gap-3">
@@ -2601,10 +2515,10 @@ export default function UsdtMiningLab() {
               </div>
               
               {/* Certificate Body - White Background */}
-              <div className="bg-white p-5 text-gray-900">
+              <div className="bg-white p-4 text-gray-900 relative">
                 {/* Royal Crown */}
-                <div className="flex justify-center mb-3">
-                  <svg className="w-12 h-10" viewBox="0 0 50 40">
+                <div className="flex justify-center mb-2">
+                  <svg className="w-10 h-8" viewBox="0 0 50 40">
                     <path d="M25 2L20 15H5L15 25L10 38H40L35 25L45 15H30L25 2Z" fill="#c9a227" stroke="#8b6914" strokeWidth="1"/>
                     <circle cx="25" cy="8" r="3" fill="#dc143c"/>
                     <circle cx="12" cy="20" r="2" fill="#dc143c"/>
@@ -2612,12 +2526,12 @@ export default function UsdtMiningLab() {
                   </svg>
                 </div>
                 
-                <h4 className="text-center font-bold text-lg text-gray-800 mb-1">CERTIFICATE OF INCORPORATION</h4>
-                <p className="text-center text-xs text-gray-500 mb-4">Companies Act 2006 - Private Limited Company</p>
+                <h4 className="text-center font-bold text-base text-gray-800 mb-1">CERTIFICATE OF INCORPORATION</h4>
+                <p className="text-center text-[10px] text-gray-500 mb-3">Companies Act 2006 - Private Limited Company</p>
                 
                 {/* Company Details */}
-                <div className="border-2 border-double border-gray-400 p-4 mb-4 bg-gray-50">
-                  <div className="grid grid-cols-2 gap-2 text-left text-xs">
+                <div className="border-2 border-double border-gray-400 p-3 mb-3 bg-gray-50">
+                  <div className="grid grid-cols-2 gap-2 text-left text-[10px]">
                     <div>
                       <span className="text-gray-500">Company Name:</span>
                       <p className="font-bold text-gray-800">USDT MINING LAB LTD</p>
@@ -2634,82 +2548,236 @@ export default function UsdtMiningLab() {
                       <span className="text-gray-500">Jurisdiction:</span>
                       <p className="font-bold text-gray-800">England & Wales</p>
                     </div>
-                    <div>
-                      <span className="text-gray-500">Company Type:</span>
-                      <p className="font-bold text-gray-800">Private Limited Company</p>
-                    </div>
-                    <div>
-                      <span className="text-gray-500">SIC Code:</span>
-                      <p className="font-bold text-gray-800">64910 - Financial Services</p>
-                    </div>
                     <div className="col-span-2">
                       <span className="text-gray-500">Registered Office:</span>
-                      <p className="font-bold text-gray-800 text-[11px]">10 Downing Street, London, SW1A 2AA, United Kingdom</p>
+                      <p className="font-bold text-gray-800 text-[10px]">10 Downing Street, London, SW1A 2AA, UK</p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* UK Leadership Team Section - Overlay on Certificate */}
+                <div className="mb-3 bg-gradient-to-r from-slate-100 to-slate-50 rounded-lg p-3 border border-gray-200">
+                  <h5 className="text-center text-gray-700 font-bold text-xs mb-2 flex items-center justify-center gap-1">
+                    <Crown className="w-3 h-3 text-amber-500" />
+                    UK Leadership Team
+                  </h5>
+                  
+                  {/* Sliding Team Carousel - Right to Left */}
+                  <div className="relative overflow-hidden rounded-lg">
+                    <div className="flex animate-slide-left gap-3 py-1" style={{ width: 'max-content' }}>
+                      {/* CEO - William Charles Anderson */}
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-cyan-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-cyan-400 shadow-md">
+                          <img 
+                            src="https://i.pravatar.cc/150?img=68" 
+                            alt="William Anderson - CEO" 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">William C. Anderson</p>
+                        <p className="text-cyan-600 text-[8px] text-center font-medium">CEO & Founder</p>
+                      </div>
+                      
+                      {/* CTO - Oliver James Thompson */}
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-purple-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-purple-400 shadow-md">
+                          <img 
+                            src="https://i.pravatar.cc/150?img=52" 
+                            alt="Oliver Thompson - CTO" 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">Oliver J. Thompson</p>
+                        <p className="text-purple-600 text-[8px] text-center font-medium">CTO</p>
+                      </div>
+                      
+                      {/* CFO - Charlotte Elizabeth Wright */}
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-amber-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-amber-400 shadow-md">
+                          <img 
+                            src="https://i.pravatar.cc/150?img=45" 
+                            alt="Charlotte Wright - CFO" 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">Charlotte E. Wright</p>
+                        <p className="text-amber-600 text-[8px] text-center font-medium">CFO</p>
+                      </div>
+                      
+                      {/* COO - Henry George Mitchell */}
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-emerald-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-emerald-400 shadow-md">
+                          <img 
+                            src="https://i.pravatar.cc/150?img=59" 
+                            alt="Henry Mitchell - COO" 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">Henry G. Mitchell</p>
+                        <p className="text-emerald-600 text-[8px] text-center font-medium">COO</p>
+                      </div>
+                      
+                      {/* Legal Advisor - Victoria Anne Roberts */}
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-rose-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-rose-400 shadow-md">
+                          <img 
+                            src="https://i.pravatar.cc/150?img=32" 
+                            alt="Victoria Roberts - Legal" 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">Victoria A. Roberts</p>
+                        <p className="text-rose-600 text-[8px] text-center font-medium">Legal Advisor</p>
+                      </div>
+                      
+                      {/* Head of Security - Edward Thomas Davis */}
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-indigo-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-indigo-400 shadow-md">
+                          <img 
+                            src="https://i.pravatar.cc/150?img=61" 
+                            alt="Edward Davis - Security" 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">Edward T. Davis</p>
+                        <p className="text-indigo-600 text-[8px] text-center font-medium">Head of Security</p>
+                      </div>
+                      
+                      {/* Head of Operations - Amelia Sarah Clarke */}
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-pink-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-pink-400 shadow-md">
+                          <img 
+                            src="https://i.pravatar.cc/150?img=26" 
+                            alt="Amelia Clarke - Operations" 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">Amelia S. Clarke</p>
+                        <p className="text-pink-600 text-[8px] text-center font-medium">Head of Ops</p>
+                      </div>
+                      
+                      {/* Duplicates for infinite scroll */}
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-cyan-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-cyan-400 shadow-md">
+                          <img src="https://i.pravatar.cc/150?img=68" alt="William Anderson - CEO" className="w-full h-full object-cover" />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">William C. Anderson</p>
+                        <p className="text-cyan-600 text-[8px] text-center font-medium">CEO & Founder</p>
+                      </div>
+                      
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-purple-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-purple-400 shadow-md">
+                          <img src="https://i.pravatar.cc/150?img=52" alt="Oliver Thompson - CTO" className="w-full h-full object-cover" />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">Oliver J. Thompson</p>
+                        <p className="text-purple-600 text-[8px] text-center font-medium">CTO</p>
+                      </div>
+                      
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-amber-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-amber-400 shadow-md">
+                          <img src="https://i.pravatar.cc/150?img=45" alt="Charlotte Wright - CFO" className="w-full h-full object-cover" />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">Charlotte E. Wright</p>
+                        <p className="text-amber-600 text-[8px] text-center font-medium">CFO</p>
+                      </div>
+                      
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-emerald-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-emerald-400 shadow-md">
+                          <img src="https://i.pravatar.cc/150?img=59" alt="Henry Mitchell - COO" className="w-full h-full object-cover" />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">Henry G. Mitchell</p>
+                        <p className="text-emerald-600 text-[8px] text-center font-medium">COO</p>
+                      </div>
+                      
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-rose-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-rose-400 shadow-md">
+                          <img src="https://i.pravatar.cc/150?img=32" alt="Victoria Roberts - Legal" className="w-full h-full object-cover" />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">Victoria A. Roberts</p>
+                        <p className="text-rose-600 text-[8px] text-center font-medium">Legal Advisor</p>
+                      </div>
+                      
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-indigo-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-indigo-400 shadow-md">
+                          <img src="https://i.pravatar.cc/150?img=61" alt="Edward Davis - Security" className="w-full h-full object-cover" />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">Edward T. Davis</p>
+                        <p className="text-indigo-600 text-[8px] text-center font-medium">Head of Security</p>
+                      </div>
+                      
+                      <div className="flex-shrink-0 w-20 p-2 bg-white rounded-lg border border-pink-200 shadow-sm team-card-glow">
+                        <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-pink-400 shadow-md">
+                          <img src="https://i.pravatar.cc/150?img=26" alt="Amelia Clarke - Operations" className="w-full h-full object-cover" />
+                        </div>
+                        <p className="text-gray-800 text-[9px] font-bold text-center">Amelia S. Clarke</p>
+                        <p className="text-pink-600 text-[8px] text-center font-medium">Head of Ops</p>
+                      </div>
                     </div>
                   </div>
                 </div>
                 
                 {/* FCA Authorization */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <svg className="w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 24 24">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 mb-3">
+                  <div className="flex items-center justify-center gap-2 mb-1">
+                    <svg className="w-4 h-4 text-blue-700" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
                     </svg>
-                    <span className="text-blue-800 font-bold text-sm">FCA Authorized & Regulated</span>
+                    <span className="text-blue-800 font-bold text-[10px]">FCA Authorized & Regulated</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 text-[10px]">
+                  <div className="grid grid-cols-2 gap-1 text-[8px]">
                     <div className="text-left">
-                      <span className="text-gray-500">FCA Register Number:</span>
-                      <p className="font-bold text-gray-800">928463</p>
+                      <span className="text-gray-500">FCA Register:</span>
+                      <span className="font-bold text-gray-800 ml-1">928463</span>
                     </div>
                     <div className="text-left">
-                      <span className="text-gray-500">FCA Status:</span>
-                      <p className="font-bold text-green-700">✓ Authorized</p>
+                      <span className="text-gray-500">Status:</span>
+                      <span className="font-bold text-green-700 ml-1">✓ Authorized</span>
                     </div>
                   </div>
                 </div>
                 
                 {/* Verification Badges */}
-                <div className="flex justify-center gap-3 mb-4">
-                  <div className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded-full">
-                    <CheckCircle className="w-3 h-3 text-green-600" />
-                    <span className="text-[9px] text-green-700 font-medium">Licensed</span>
+                <div className="flex justify-center gap-2 mb-3">
+                  <div className="flex items-center gap-0.5 bg-green-100 px-1.5 py-0.5 rounded-full">
+                    <CheckCircle className="w-2.5 h-2.5 text-green-600" />
+                    <span className="text-[8px] text-green-700 font-medium">Licensed</span>
                   </div>
-                  <div className="flex items-center gap-1 bg-blue-100 px-2 py-1 rounded-full">
-                    <Shield className="w-3 h-3 text-blue-600" />
-                    <span className="text-[9px] text-blue-700 font-medium">Insured</span>
+                  <div className="flex items-center gap-0.5 bg-blue-100 px-1.5 py-0.5 rounded-full">
+                    <Shield className="w-2.5 h-2.5 text-blue-600" />
+                    <span className="text-[8px] text-blue-700 font-medium">Insured</span>
                   </div>
-                  <div className="flex items-center gap-1 bg-purple-100 px-2 py-1 rounded-full">
-                    <CheckCircle className="w-3 h-3 text-purple-600" />
-                    <span className="text-[9px] text-purple-700 font-medium">Audited</span>
+                  <div className="flex items-center gap-0.5 bg-purple-100 px-1.5 py-0.5 rounded-full">
+                    <CheckCircle className="w-2.5 h-2.5 text-purple-600" />
+                    <span className="text-[8px] text-purple-700 font-medium">Audited</span>
                   </div>
-                  <div className="flex items-center gap-1 bg-amber-100 px-2 py-1 rounded-full">
-                    <Shield className="w-3 h-3 text-amber-600" />
-                    <span className="text-[9px] text-amber-700 font-medium">Verified</span>
+                  <div className="flex items-center gap-0.5 bg-amber-100 px-1.5 py-0.5 rounded-full">
+                    <Shield className="w-2.5 h-2.5 text-amber-600" />
+                    <span className="text-[8px] text-amber-700 font-medium">Verified</span>
                   </div>
                 </div>
                 
-                {/* Signature Section */}
-                <div className="border-t border-gray-300 pt-3">
+                {/* CEO Signature Section */}
+                <div className="border-t border-gray-300 pt-2">
                   <div className="flex justify-between items-end">
                     <div className="text-left">
-                      <p className="text-[9px] text-gray-500 mb-1">Authorised Signatory</p>
-                      {/* Handwritten Signature SVG */}
-                      <svg className="w-28 h-10" viewBox="0 0 140 40">
-                        <path d="M5 30 Q15 10 25 25 T45 20 Q55 15 65 25 T85 18 Q95 12 105 22 T125 15" 
-                              fill="none" stroke="#1e3a5f" strokeWidth="2" strokeLinecap="round"/>
-                        <path d="M30 32 Q40 28 50 35" fill="none" stroke="#1e3a5f" strokeWidth="1.5"/>
+                      <p className="text-[8px] text-gray-500 mb-0.5">Authorised Signatory</p>
+                      {/* Professional Handwritten Signature SVG */}
+                      <svg className="w-28 h-10" viewBox="0 0 140 45">
+                        <path d="M5 30 Q15 10 30 25 T55 18 Q70 12 85 24 T115 15 Q125 10 135 22" 
+                              fill="none" stroke="#1e3a5f" strokeWidth="2.5" strokeLinecap="round"/>
+                        <path d="M40 32 Q52 27 62 35" fill="none" stroke="#1e3a5f" strokeWidth="1.8"/>
+                        <path d="M85 26 L90 38 L95 26" fill="none" stroke="#1e3a5f" strokeWidth="1.5"/>
                       </svg>
-                      <p className="text-[10px] font-bold text-gray-800">Zakir Ullah</p>
-                      <p className="text-[8px] text-gray-500">Chief Executive Officer</p>
+                      <p className="text-[9px] font-bold text-gray-800">William C. Anderson</p>
+                      <p className="text-[7px] text-gray-500">Chief Executive Officer</p>
                     </div>
                     <div className="text-center">
                       {/* Official Seal */}
-                      <div className="w-16 h-16 rounded-full border-4 border-red-700 flex items-center justify-center bg-red-50">
+                      <div className="w-14 h-14 rounded-full border-3 border-red-700 flex items-center justify-center bg-red-50 shadow-inner">
                         <div className="text-center">
-                          <p className="text-[7px] font-bold text-red-800">COMPANIES</p>
-                          <p className="text-[7px] font-bold text-red-800">HOUSE</p>
-                          <p className="text-[6px] text-red-600">OFFICIAL SEAL</p>
+                          <p className="text-[6px] font-bold text-red-800">COMPANIES</p>
+                          <p className="text-[6px] font-bold text-red-800">HOUSE</p>
+                          <p className="text-[5px] text-red-600">OFFICIAL SEAL</p>
                         </div>
                       </div>
                     </div>
@@ -2719,198 +2787,14 @@ export default function UsdtMiningLab() {
               
               {/* Certificate Footer */}
               <div className="bg-gray-100 py-2 px-4 border-t border-gray-300">
-                <p className="text-[8px] text-gray-500 text-center">
+                <p className="text-[7px] text-gray-500 text-center">
                   This certificate is issued under the authority of the Registrar of Companies for England and Wales.
                   <br />Verify at: find-and-update.company-information.service.gov.uk
                 </p>
               </div>
             </div>
 
-            {/* Team Section with Sliding Carousel */}
-            <div className="mb-5">
-              <h3 className="text-white font-bold text-sm mb-3 flex items-center justify-center gap-2">
-                <Users className="w-4 h-4 text-cyan-400" />
-                Our Leadership Team
-              </h3>
-              
-              {/* Sliding Team Carousel */}
-              <div className="relative overflow-hidden">
-                <div className="flex animate-slide-left gap-4" style={{ width: 'max-content' }}>
-                  {/* CEO */}
-                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-cyan-500/30 shadow-lg">
-                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-cyan-400 shadow-lg">
-                      <div className="w-full h-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-white text-xs font-bold text-center">Zakir Ullah</p>
-                    <p className="text-cyan-400 text-[10px] text-center">CEO & Founder</p>
-                  </div>
-                  
-                  {/* CTO */}
-                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-purple-500/30 shadow-lg">
-                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-purple-400 shadow-lg">
-                      <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-white text-xs font-bold text-center">Ahmed Khan</p>
-                    <p className="text-purple-400 text-[10px] text-center">CTO</p>
-                  </div>
-                  
-                  {/* CFO */}
-                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-amber-500/30 shadow-lg">
-                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-amber-400 shadow-lg">
-                      <div className="w-full h-full bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-white text-xs font-bold text-center">Muhammad R.</p>
-                    <p className="text-amber-400 text-[10px] text-center">CFO</p>
-                  </div>
-                  
-                  {/* COO */}
-                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-emerald-500/30 shadow-lg">
-                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-emerald-400 shadow-lg">
-                      <div className="w-full h-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-white text-xs font-bold text-center">Sara Ali</p>
-                    <p className="text-emerald-400 text-[10px] text-center">COO</p>
-                  </div>
-                  
-                  {/* Legal Advisor */}
-                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-rose-500/30 shadow-lg">
-                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-rose-400 shadow-lg">
-                      <div className="w-full h-full bg-gradient-to-br from-rose-400 to-red-600 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-white text-xs font-bold text-center">James Wilson</p>
-                    <p className="text-rose-400 text-[10px] text-center">Legal Advisor</p>
-                  </div>
-                  
-                  {/* Head of Security */}
-                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-indigo-500/30 shadow-lg">
-                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-indigo-400 shadow-lg">
-                      <div className="w-full h-full bg-gradient-to-br from-indigo-400 to-violet-600 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-white text-xs font-bold text-center">David Brown</p>
-                    <p className="text-indigo-400 text-[10px] text-center">Head of Security</p>
-                  </div>
-                  
-                  {/* Duplicate for infinite scroll effect */}
-                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-cyan-500/30 shadow-lg">
-                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-cyan-400 shadow-lg">
-                      <div className="w-full h-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-white text-xs font-bold text-center">Zakir Ullah</p>
-                    <p className="text-cyan-400 text-[10px] text-center">CEO & Founder</p>
-                  </div>
-                  
-                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-purple-500/30 shadow-lg">
-                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-purple-400 shadow-lg">
-                      <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-white text-xs font-bold text-center">Ahmed Khan</p>
-                    <p className="text-purple-400 text-[10px] text-center">CTO</p>
-                  </div>
-                  
-                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-amber-500/30 shadow-lg">
-                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-amber-400 shadow-lg">
-                      <div className="w-full h-full bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-white text-xs font-bold text-center">Muhammad R.</p>
-                    <p className="text-amber-400 text-[10px] text-center">CFO</p>
-                  </div>
-                  
-                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-emerald-500/30 shadow-lg">
-                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-emerald-400 shadow-lg">
-                      <div className="w-full h-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-white text-xs font-bold text-center">Sara Ali</p>
-                    <p className="text-emerald-400 text-[10px] text-center">COO</p>
-                  </div>
-                  
-                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-rose-500/30 shadow-lg">
-                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-rose-400 shadow-lg">
-                      <div className="w-full h-full bg-gradient-to-br from-rose-400 to-red-600 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-white text-xs font-bold text-center">James Wilson</p>
-                    <p className="text-rose-400 text-[10px] text-center">Legal Advisor</p>
-                  </div>
-                  
-                  <div className="flex-shrink-0 w-28 p-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-indigo-500/30 shadow-lg">
-                    <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border-2 border-indigo-400 shadow-lg">
-                      <div className="w-full h-full bg-gradient-to-br from-indigo-400 to-violet-600 flex items-center justify-center">
-                        <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-white text-xs font-bold text-center">David Brown</p>
-                    <p className="text-indigo-400 text-[10px] text-center">Head of Security</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Signature Section */}
-            <div className="mb-4 p-3 bg-slate-900/50 rounded-xl">
-              <p className="text-gray-500 text-[10px] mb-2">Digitally Signed by CEO</p>
-              <svg className="w-32 h-8 mx-auto" viewBox="0 0 200 40">
-                <path
-                  d="M10 30 Q30 10 50 25 T90 20 T130 28 T170 18 T190 25"
-                  fill="none"
-                  stroke="url(#signatureGradient)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <defs>
-                  <linearGradient id="signatureGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#00d4ff" />
-                    <stop offset="100%" stopColor="#8a2be2" />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <p className="text-gray-600 text-[10px] mt-1">Zakir Ullah - CEO</p>
-            </div>
-
+            {/* Footer Links */}
             <div className="flex items-center justify-center gap-4 text-gray-500 text-xs mb-3">
               <a href="#" className="hover:text-white transition-colors">Terms</a>
               <span>|</span>
