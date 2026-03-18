@@ -654,7 +654,7 @@ export default function UsdtMiningLab() {
             setShowDashboard(true);
           }
         }
-      }, 3000);
+      }, 7000); // 7 seconds loading screen
 
       // Create particles
       if (particlesRef.current) {
@@ -1067,7 +1067,7 @@ export default function UsdtMiningLab() {
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: [1, 1.05, 1], opacity: 1 }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="mb-8"
+            className="mb-6"
           >
             <div className="relative inline-block">
               <div className="w-28 h-28 rounded-3xl flex items-center justify-center relative" style={{ background: 'linear-gradient(135deg, #00d4ff, #8a2be2)', boxShadow: '0 0 60px rgba(0, 212, 255, 0.5)' }}>
@@ -1088,21 +1088,31 @@ export default function UsdtMiningLab() {
           >
             USDT Mining Lab
           </motion.h1>
-          <motion.p className="text-gray-400 mb-8">Premium Cloud Mining Platform</motion.p>
+          <motion.p className="text-gray-400 mb-6">Premium Cloud Mining Platform</motion.p>
 
-          {/* Loading Message */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={loadingMessage}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="mb-6 h-6 font-medium"
-              style={{ color: '#00d4ff' }}
-            >
-              {loadingMessages[loadingMessage]}
-            </motion.div>
-          </AnimatePresence>
+          {/* LAUNCH DATE - BIG MESSAGE */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="mb-8"
+          >
+            <div className="bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 border-2 border-cyan-500/50 rounded-2xl p-6 max-w-md mx-auto">
+              <motion.div
+                animate={{ scale: [1, 1.02, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <p className="text-gray-300 text-sm uppercase tracking-widest mb-2">Website Launching</p>
+                <h2 className="text-4xl md:text-5xl font-black mb-2" style={{ background: 'linear-gradient(90deg, #00d4ff, #8a2be2, #ff00ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  20/March/2026
+                </h2>
+                <div className="flex items-center justify-center gap-2 mt-3">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span className="text-green-400 text-sm font-medium">GRAND OPENING</span>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
 
           {/* Progress Bar */}
           <div className="w-72 mx-auto mb-4">
@@ -1521,7 +1531,7 @@ export default function UsdtMiningLab() {
                     <div className="mb-1">
                       <span className="text-3xl font-black text-transparent bg-clip-text"
                         style={{ backgroundImage: 'linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%)' }}>
-                        $<AnimatedCounter end={4589620} prefix="" decimals={0} />
+                        $<AnimatedCounter end={platformStats.totalDeposits} prefix="" decimals={0} />
                       </span>
                     </div>
                     
@@ -1607,7 +1617,7 @@ export default function UsdtMiningLab() {
                     <div className="mb-1">
                       <span className="text-3xl font-black text-transparent bg-clip-text"
                         style={{ backgroundImage: 'linear-gradient(135deg, #f87171 0%, #ef4444 50%, #dc2626 100%)' }}>
-                        $<AnimatedCounter end={2824530} prefix="" decimals={0} />
+                        $<AnimatedCounter end={platformStats.totalWithdrawals} prefix="" decimals={0} />
                       </span>
                     </div>
                     <div className="text-gray-400 text-sm font-medium mb-2">Total Withdrawals</div>
@@ -1689,7 +1699,7 @@ export default function UsdtMiningLab() {
                     <div className="mb-1">
                       <span className="text-3xl font-black text-transparent bg-clip-text"
                         style={{ backgroundImage: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%)' }}>
-                        <AnimatedCounter end={35847} prefix="" decimals={0} />
+                        <AnimatedCounter end={platformStats.totalUsers} prefix="" decimals={0} />
                       </span>
                     </div>
                     <div className="text-gray-400 text-sm font-medium mb-2">Active Miners</div>
@@ -1771,7 +1781,7 @@ export default function UsdtMiningLab() {
                     <div className="mb-1">
                       <span className="text-3xl font-black text-transparent bg-clip-text"
                         style={{ backgroundImage: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #7c3aed 100%)' }}>
-                        $<AnimatedCounter end={1654280} prefix="" decimals={0} />
+                        $<AnimatedCounter end={platformStats.profitPaid} prefix="" decimals={0} />
                       </span>
                     </div>
                     <div className="text-gray-400 text-sm font-medium mb-2">Profit Paid</div>
@@ -1935,7 +1945,7 @@ export default function UsdtMiningLab() {
                     <div className="mb-1">
                       <span className="text-3xl font-black text-transparent bg-clip-text"
                         style={{ backgroundImage: 'linear-gradient(135deg, #22d3ee 0%, #00d4ff 50%, #0ea5e9 100%)' }}>
-                        <AnimatedCounter end={8452} prefix="" decimals={0} />
+                        <AnimatedCounter end={platformStats.activeMiners} prefix="" decimals={0} />
                       </span>
                     </div>
                     <div className="text-gray-400 text-sm font-medium mb-2">Visitors Today</div>
@@ -2038,7 +2048,7 @@ export default function UsdtMiningLab() {
                     <div className="mb-0.5">
                       <span className="text-2xl font-black text-transparent bg-clip-text"
                         style={{ backgroundImage: 'linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%)' }}>
-                        $<AnimatedCounter end={42580} prefix="" decimals={0} />
+                        $<AnimatedCounter end={todayStats.todayDeposits} prefix="" decimals={0} />
                       </span>
                     </div>
                     <div className="text-gray-400 text-xs font-medium">Today Deposits</div>
@@ -2110,7 +2120,7 @@ export default function UsdtMiningLab() {
                     <div className="mb-0.5">
                       <span className="text-2xl font-black text-transparent bg-clip-text"
                         style={{ backgroundImage: 'linear-gradient(135deg, #f87171 0%, #ef4444 50%, #dc2626 100%)' }}>
-                        $<AnimatedCounter end={18200} prefix="" decimals={0} />
+                        $<AnimatedCounter end={todayStats.todayWithdrawals} prefix="" decimals={0} />
                       </span>
                     </div>
                     <div className="text-gray-400 text-xs font-medium">Today Withdrawals</div>
@@ -2182,7 +2192,7 @@ export default function UsdtMiningLab() {
                     <div className="mb-0.5">
                       <span className="text-2xl font-black text-transparent bg-clip-text"
                         style={{ backgroundImage: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%)' }}>
-                        <AnimatedCounter end={134} prefix="" decimals={0} />
+                        <AnimatedCounter end={todayStats.newUsers} prefix="" decimals={0} />
                       </span>
                     </div>
                     <div className="text-gray-400 text-xs font-medium">New Users Today</div>
@@ -2254,7 +2264,7 @@ export default function UsdtMiningLab() {
                     <div className="mb-0.5">
                       <span className="text-2xl font-black text-transparent bg-clip-text"
                         style={{ backgroundImage: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)' }}>
-                        $<AnimatedCounter end={7820} prefix="" decimals={0} />
+                        $<AnimatedCounter end={todayStats.todayProfit} prefix="" decimals={0} />
                       </span>
                     </div>
                     <div className="text-gray-400 text-xs font-medium">Today Profit</div>
