@@ -2835,7 +2835,8 @@ export default function UsdtMiningLab() {
               <span className="flex items-center gap-1"><Lock className="w-3 h-3 text-cyan-400" />256-bit</span>
               <span className="flex items-center gap-1"><CheckCircle className="w-3 h-3 text-amber-400" />Verified</span>
             </div>
-            <p className="text-gray-600 text-xs mt-2">© 2025 USDT Mining Lab</p>
+            <p className="text-gray-600 text-xs mt-2">© 2025 USDT Mining Lab - UK Registered</p>
+            <p className="text-gray-700 text-[10px] mt-1">Build: v2.0.0 | {new Date().toISOString().split('T')[0]}</p>
           </div>
         </footer>
 
