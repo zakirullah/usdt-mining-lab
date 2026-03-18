@@ -1,0 +1,12 @@
+# Force fresh build - version 2
+[phases.setup]
+nixPkgs = ['nodejs_22', 'bun']
+
+[phases.install]
+cmd = 'bun install'
+
+[phases.build]
+cmd = 'bun run build'
+
+[start]
+cmd = 'bun run start'
