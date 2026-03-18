@@ -310,7 +310,6 @@ export default function UsdtMiningLab() {
 
   // Live Stats
   const [liveHashrate, setLiveHashrate] = useState(128.45);
-  const [onlineVisitors, setOnlineVisitors] = useState(1847);
 
   // Mining Animation
   const [miningAnimationIndex, setMiningAnimationIndex] = useState(0);
@@ -343,8 +342,12 @@ export default function UsdtMiningLab() {
     todayDeposits: 0,
     todayWithdrawals: 0,
     newUsers: 0,
-    todayProfit: 0
+    todayProfit: 0,
+    todayVisitors: 0
   });
+  
+  // Visitor tracking
+  const [visitorId, setVisitorId] = useState<string | null>(null);
   const [calculatorAmount, setCalculatorAmount] = useState('');
   const [calculatorPlan, setCalculatorPlan] = useState<'starter' | 'pro'>('starter');
   const [depositHistory, setDepositHistory] = useState<Array<{ wallet: string; amount: number; status: string; date: string }>>([]);
@@ -531,7 +534,8 @@ export default function UsdtMiningLab() {
             todayDeposits: data.todayDeposits || 0,
             todayWithdrawals: data.todayWithdrawals || 0,
             newUsers: data.newUsersToday || 0,
-            todayProfit: data.todayProfit || 0
+            todayProfit: data.todayProfit || 0,
+            todayVisitors: data.todayVisitors || 0
           });
         }
       } catch { /* ignore */ }
@@ -539,6 +543,34 @@ export default function UsdtMiningLab() {
     fetchStats();
     const interval = setInterval(fetchStats, 30000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Track visitor
+  useEffect(() => {
+    const trackVisitor = async () => {
+      try {
+        // Get or create visitor ID from localStorage
+        let vid = localStorage.getItem('visitor_id');
+        if (!vid) {
+          vid = crypto.randomUUID();
+          localStorage.setItem('visitor_id', vid);
+        }
+        setVisitorId(vid);
+        
+        // Track visitor on server
+        await fetch('/api/visitor', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            visitorId: vid,
+            page: window.location.pathname,
+            referrer: document.referrer || null
+          })
+        });
+      } catch { /* ignore */ }
+    };
+    
+    trackVisitor();
   }, []);
 
   // Fetch settings (deposit wallet)
@@ -689,17 +721,6 @@ export default function UsdtMiningLab() {
         return Math.max(128, Math.min(129, prev + change));
       });
     }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Online visitors fluctuation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setOnlineVisitors(prev => {
-        const change = Math.floor(Math.random() * 5) - 2;
-        return Math.max(1800, Math.min(1900, prev + change));
-      });
-    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -1863,7 +1884,7 @@ export default function UsdtMiningLab() {
                     <div className="mb-1">
                       <span className="text-3xl font-black text-transparent bg-clip-text"
                         style={{ backgroundImage: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)' }}>
-                        <AnimatedCounter end={onlineVisitors} prefix="" decimals={0} />
+                        <AnimatedCounter end={platformStats.onlineUsers} prefix="" decimals={0} />
                       </span>
                     </div>
                     <div className="text-gray-400 text-sm font-medium mb-2">Online Users</div>
@@ -1945,7 +1966,7 @@ export default function UsdtMiningLab() {
                     <div className="mb-1">
                       <span className="text-3xl font-black text-transparent bg-clip-text"
                         style={{ backgroundImage: 'linear-gradient(135deg, #22d3ee 0%, #00d4ff 50%, #0ea5e9 100%)' }}>
-                        <AnimatedCounter end={platformStats.activeMiners} prefix="" decimals={0} />
+                        <AnimatedCounter end={todayStats.todayVisitors} prefix="" decimals={0} />
                       </span>
                     </div>
                     <div className="text-gray-400 text-sm font-medium mb-2">Visitors Today</div>
@@ -3945,7 +3966,7 @@ export default function UsdtMiningLab() {
                       { icon: Sparkles, label: 'Monthly', value: `$${formatNumber(miningStats.totalMonthlyProfit)}`, color: 'purple' },
                       { icon: TrendingUp, label: 'ROI', value: `${miningStats.averageROI}%`, color: 'amber' },
                       { icon: Activity, label: 'Hashrate', value: `${liveHashrate.toFixed(1)} TH`, color: 'cyan' },
-                      { icon: Users, label: 'Online', value: String(onlineVisitors), color: 'green' },
+                      { icon: Users, label: 'Online', value: String(platformStats.onlineUsers), color: 'green' },
                     ].map((stat, i) => (
                       <motion.div
                         key={stat.label}
@@ -4265,7 +4286,7 @@ export default function UsdtMiningLab() {
               >
                 {[
                   { label: 'Network Hashrate', value: `${liveHashrate.toFixed(1)} TH/s`, color: 'cyan' },
-                  { label: 'Online Miners', value: String(onlineVisitors), color: 'green' },
+                  { label: 'Online Miners', value: String(platformStats.onlineUsers), color: 'green' },
                   { label: 'Block Height', value: '19,845,231', color: 'purple' },
                   { label: 'Network Fee', value: '0.001 USDT', color: 'amber' }
                 ].map((stat, i) => (

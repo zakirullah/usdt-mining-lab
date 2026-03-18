@@ -215,3 +215,39 @@ model Session {
   @@index([token])
   @@map("umlab_sessions")
 }
+
+// Visitor Tracking model - tracks website visitors
+model Visitor {
+  id           String   @id @default(cuid())
+  visitorId    String   @unique // Unique visitor identifier (stored in cookie)
+  ipAddress    String?
+  userAgent    String?
+  page         String   @default("/")
+  referrer     String?
+  lastVisit    DateTime @default(now())
+  visitCount   Int      @default(1)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([visitorId])
+  @@index([lastVisit])
+  @@index([createdAt])
+  @@map("umlab_visitors")
+}
+
+// Daily Stats model - aggregates daily statistics
+model DailyStat {
+  id           String   @id @default(cuid())
+  date         DateTime @unique
+  visitors     Int      @default(0)
+  pageViews    Int      @default(0)
+  newUsers     Int      @default(0)
+  deposits     Float    @default(0)
+  withdrawals  Float    @default(0)
+  profit       Float    @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([date])
+  @@map("umlab_daily_stats")
+}
