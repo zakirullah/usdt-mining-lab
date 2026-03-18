@@ -4,10 +4,11 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Use DATABASE_URL from environment variable
-// For Railway: Set DATABASE_URL in Railway environment variables
-// For local: Set DATABASE_URL in .env file
-const databaseUrl = process.env.DATABASE_URL!
+// Supabase PostgreSQL Database URL (Production)
+const SUPABASE_DB_URL = 'postgresql://postgres.bvqtrchbvptorbanmxey:zakirullah%40123456789@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres'
+
+// Use DATABASE_URL from environment, or fallback to Supabase URL
+const databaseUrl = process.env.DATABASE_URL || SUPABASE_DB_URL
 
 export const db =
   globalForPrisma.prisma ??
