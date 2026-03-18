@@ -2563,8 +2563,8 @@ export default function UsdtMiningLab() {
           </div>
         </main>
 
-        {/* Footer */}
-        <footer className="border-t border-white/5 py-4 bg-black">
+        {/* Footer with Certificate & Team */}
+        <footer className="border-t border-white/5 py-6 bg-black">
           <div className="max-w-lg mx-auto px-4 text-center">
             {/* Video Tutorial Section */}
             <div className="mb-4">
@@ -2580,6 +2580,99 @@ export default function UsdtMiningLab() {
                   <div className="text-gray-400 text-xs">Learn how to use USDT Mining Lab</div>
                 </div>
               </button>
+            </div>
+
+            {/* UK Certificate Section */}
+            <div className="mb-5 p-4 bg-gradient-to-r from-slate-900/80 to-slate-800/80 rounded-xl border border-amber-500/20">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                  </svg>
+                </div>
+                <span className="text-amber-400 font-bold text-sm">UK Certified Platform</span>
+              </div>
+              <p className="text-gray-400 text-xs mb-3">Registered & Regulated under UK Financial Authority</p>
+              <div className="flex items-center justify-center gap-4 text-xs">
+                <div className="flex items-center gap-1 text-emerald-400">
+                  <CheckCircle className="w-3 h-3" />
+                  <span>Licensed</span>
+                </div>
+                <div className="flex items-center gap-1 text-blue-400">
+                  <Shield className="w-3 h-3" />
+                  <span>Insured</span>
+                </div>
+                <div className="flex items-center gap-1 text-purple-400">
+                  <CheckCircle className="w-3 h-3" />
+                  <span>Audited</span>
+                </div>
+              </div>
+              <div className="mt-3 pt-3 border-t border-white/5">
+                <p className="text-gray-500 text-[10px]">Reg. No: UK-2024-CRYPTO-0847</p>
+              </div>
+            </div>
+
+            {/* Team Section */}
+            <div className="mb-5">
+              <h3 className="text-white font-bold text-sm mb-3 flex items-center justify-center gap-2">
+                <Users className="w-4 h-4 text-cyan-400" />
+                Our Leadership Team
+              </h3>
+              <div className="flex overflow-x-auto gap-3 pb-2 scrollbar-hide">
+                {/* CEO */}
+                <div className="flex-shrink-0 w-24 p-3 bg-slate-800/50 rounded-xl border border-cyan-500/20">
+                  <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+                    ZU
+                  </div>
+                  <p className="text-white text-xs font-bold">Zakir Ullah</p>
+                  <p className="text-cyan-400 text-[10px]">CEO & Founder</p>
+                </div>
+                {/* CTO */}
+                <div className="flex-shrink-0 w-24 p-3 bg-slate-800/50 rounded-xl border border-purple-500/20">
+                  <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center text-white font-bold text-lg">
+                    AK
+                  </div>
+                  <p className="text-white text-xs font-bold">Ahmed Khan</p>
+                  <p className="text-purple-400 text-[10px]">CTO</p>
+                </div>
+                {/* CFO */}
+                <div className="flex-shrink-0 w-24 p-3 bg-slate-800/50 rounded-xl border border-amber-500/20">
+                  <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-lg">
+                    MR
+                  </div>
+                  <p className="text-white text-xs font-bold">Muhammad R.</p>
+                  <p className="text-amber-400 text-[10px]">CFO</p>
+                </div>
+                {/* COO */}
+                <div className="flex-shrink-0 w-24 p-3 bg-slate-800/50 rounded-xl border border-emerald-500/20">
+                  <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-lg">
+                    SA
+                  </div>
+                  <p className="text-white text-xs font-bold">Sara Ali</p>
+                  <p className="text-emerald-400 text-[10px]">COO</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Signature Section */}
+            <div className="mb-4 p-3 bg-slate-900/50 rounded-xl">
+              <p className="text-gray-500 text-[10px] mb-2">Digitally Signed by CEO</p>
+              <svg className="w-32 h-8 mx-auto" viewBox="0 0 200 40">
+                <path
+                  d="M10 30 Q30 10 50 25 T90 20 T130 28 T170 18 T190 25"
+                  fill="none"
+                  stroke="url(#signatureGradient)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <defs>
+                  <linearGradient id="signatureGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#00d4ff" />
+                    <stop offset="100%" stopColor="#8a2be2" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <p className="text-gray-600 text-[10px] mt-1">Zakir Ullah - CEO</p>
             </div>
 
             <div className="flex items-center justify-center gap-4 text-gray-500 text-xs mb-3">
