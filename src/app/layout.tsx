@@ -3,6 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
+// Force dynamic rendering - disable all caching
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -51,4 +55,4 @@ export default function RootLayout({
     </html>
   );
 }
-// Build timestamp: 1773867059
+// Build timestamp: 1773868000 - Force rebuild
