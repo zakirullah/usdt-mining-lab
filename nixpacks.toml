@@ -1,4 +1,4 @@
-# Force fresh build - version 2
+# Force fresh build - version 3
 [phases.setup]
 nixPkgs = ['nodejs_22', 'bun']
 
@@ -6,7 +6,13 @@ nixPkgs = ['nodejs_22', 'bun']
 cmd = 'bun install'
 
 [phases.build]
-cmd = 'bun run build'
+cmd = '''
+export DATABASE_URL="postgresql://postgres.bvqtrchbvptorbanmxey:zakirullah%40123456789@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres?pgbouncer=true&sslmode=require&connection_limit=1"
+bun run build
+'''
 
 [start]
 cmd = 'bun run start'
+
+[variables]
+DATABASE_URL = 'postgresql://postgres.bvqtrchbvptorbanmxey:zakirullah%40123456789@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres?pgbouncer=true&sslmode=require&connection_limit=1'
