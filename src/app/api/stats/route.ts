@@ -1,9 +1,18 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
+  const startTime = Date.now();
+  
   try {
     console.log('Stats API: Starting to fetch data...');
+    console.log('Stats API: Environment =', process.env.NODE_ENV);
+    
+    // Test database connection with a simple query
+    const testResult = await db.$queryRaw`SELECT 1 as test`;
+    console.log('Stats API: Database connection test =', testResult);
     
     // Get total users
     const totalUsers = await db.user.count({
@@ -17,7 +26,6 @@ export async function GET() {
       _sum: { amount: true }
     });
     const totalDeposits = deposits._sum.amount || 0;
-    console.log('Stats API: totalDeposits =', totalDeposits);
 
     // Get total withdrawals amount
     const withdrawals = await db.withdrawal.aggregate({
@@ -25,20 +33,17 @@ export async function GET() {
       _sum: { amount: true }
     });
     const totalWithdrawals = withdrawals._sum.amount || 0;
-    console.log('Stats API: totalWithdrawals =', totalWithdrawals);
 
     // Get active miners
     const activeMiners = await db.userMining.count({
       where: { status: 'active' }
     });
-    console.log('Stats API: activeMiners =', activeMiners);
 
     // Get total profit distributed (sum of all mining totalEarned)
     const profitAggregate = await db.userMining.aggregate({
       _sum: { totalEarned: true }
     });
     const totalProfitDistributed = profitAggregate._sum.totalEarned || 0;
-    console.log('Stats API: totalProfitDistributed =', totalProfitDistributed);
 
     // Get online users (sessions in last 5 minutes)
     const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
@@ -47,7 +52,6 @@ export async function GET() {
         createdAt: { gte: fiveMinutesAgo }
       }
     });
-    console.log('Stats API: onlineUsers =', onlineUsers);
 
     // Get new users today
     const today = new Date();
@@ -57,7 +61,6 @@ export async function GET() {
         createdAt: { gte: today }
       }
     });
-    console.log('Stats API: newUsersToday =', newUsersToday);
 
     // Today deposits
     const todayDeposits = await db.deposit.aggregate({
@@ -86,7 +89,8 @@ export async function GET() {
       _sum: { amount: true }
     });
 
-    console.log('Stats API: Successfully fetched all data');
+    const elapsedMs = Date.now() - startTime;
+    console.log('Stats API: Successfully fetched all data in', elapsedMs, 'ms');
     
     return NextResponse.json({
       totalUsers,
@@ -99,10 +103,19 @@ export async function GET() {
       todayDeposits: todayDeposits._sum.amount || 0,
       todayWithdrawals: todayWithdrawals._sum.amount || 0,
       todayProfit: todayProfitResult._sum.amount || 0,
-      isRealData: true
+      isRealData: true,
+      responseTimeMs: elapsedMs,
+      timestamp: new Date().toISOString()
     });
   } catch (error) {
+    const elapsedMs = Date.now() - startTime;
     console.error('Stats error:', error);
+    
+    const errorDetails = {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      name: error instanceof Error ? error.name : 'Unknown',
+      stack: error instanceof Error ? error.stack?.split('\n').slice(0, 5) : undefined
+    };
     
     return NextResponse.json({
       totalUsers: 0,
@@ -116,7 +129,9 @@ export async function GET() {
       todayWithdrawals: 0,
       todayProfit: 0,
       isRealData: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: errorDetails,
+      responseTimeMs: elapsedMs,
+      timestamp: new Date().toISOString()
     });
   }
 }
