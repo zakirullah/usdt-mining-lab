@@ -11,6 +11,9 @@ datasource db {
   directUrl = env("DIRECT_DATABASE_URL")
 }
 
+// Fallback URL for development (Turbopack doesn't load .env properly)
+// In production, DATABASE_URL environment variable is used
+
 // User model - stores all user information
 model User {
   id            String   @id @default(cuid())

@@ -3,7 +3,7 @@
   "version": "2.8.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3000 2>&1 | tee dev.log",
+    "dev": "DATABASE_URL=\"postgresql://postgres.bvqtrchbvptorbanmxey:zakirullah%40123456789@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres?pgbouncer=true&sslmode=require\" DIRECT_DATABASE_URL=\"postgresql://postgres.bvqtrchbvptorbanmxey:zakirullah%40123456789@aws-1-ap-northeast-2.pooler.supabase.com:6543/postgres?sslmode=require\" next dev -p 3000 2>&1 | tee dev.log",
     "build": "prisma generate && next build",
     "postinstall": "prisma generate",
     "start": "next start",
