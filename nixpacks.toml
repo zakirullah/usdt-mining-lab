@@ -4,7 +4,7 @@ nixPkgs = ['...', 'openssl', 'openssl.dev']
 [phases.build]
 cmds = [
   'bun install',
-  'DATABASE_URL="postgresql://postgres.bvqtrchbvptorbanmxey:zakirullah%40123456789@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres?pgbouncer=true&sslmode=require" bunx prisma generate --schema=prisma/schema.prisma',
+  'DATABASE_URL="postgresql://postgres.bvqtrchbvptorbanmxey:zakirullah%40123456789@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres?pgbouncer=true&sslmode=require" DIRECT_DATABASE_URL="postgresql://postgres.bvqtrchbvptorbanmxey:zakirullah%40123456789@aws-1-ap-northeast-2.pooler.supabase.com:6543/postgres?sslmode=require" bunx prisma generate --schema=prisma/schema.prisma',
   'bun run build'
 ]
 
