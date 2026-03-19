@@ -152,6 +152,7 @@ model Referral {
   id              String   @id @default(cuid())
   referrerId      String
   referredId      String
+  level           Int      @default(1) // 1, 2, or 3 for multi-level referral
   commission      Float    @default(0)
   commissionPercent Float  @default(7) // 7% commission
   miningSessionId String?  // Which mining session triggered this commission
@@ -161,6 +162,7 @@ model Referral {
   referrer        User @relation("ReferrerReferrals", fields: [referrerId], references: [id], onDelete: Cascade)
   referred        User @relation("ReferredReferrals", fields: [referredId], references: [id], onDelete: Cascade)
 
+  @@unique([referredId, level])
   @@index([referrerId])
   @@index([referredId])
   @@map("umlab_referrals")
