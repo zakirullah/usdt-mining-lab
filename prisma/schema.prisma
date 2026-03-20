@@ -58,6 +58,9 @@ model AdminSettings {
   minDeposit        Float    @default(10)
   minWithdraw       Float    @default(10)
   maintenanceMode   Boolean  @default(false)
+  telegramBotToken  String?  // Telegram bot token for notifications
+  telegramChatId    String?  // Telegram chat/group ID for notifications
+  telegramEnabled   Boolean  @default(false) // Enable/disable Telegram notifications
   updatedAt         DateTime @updatedAt
 
   @@map("umlab_admin_settings")

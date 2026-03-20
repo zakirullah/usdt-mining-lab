@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { createHash } from 'crypto';
 import { getAuthUser } from '@/lib/auth';
+import { notifyNewWithdrawal } from '@/lib/telegram';
 
 // Withdrawal fee percentage (5%)
 const WITHDRAWAL_FEE_PERCENT = 5;
@@ -143,6 +144,9 @@ export async function POST(request: NextRequest) {
         amount: netAmount
       }
     });
+
+    // Send Telegram notification
+    await notifyNewWithdrawal(user.walletAddress, netAmount, 'Pending');
 
     return NextResponse.json({
       success: true,

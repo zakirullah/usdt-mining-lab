@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { getAuthUser } from '@/lib/auth';
+import { notifyNewDeposit } from '@/lib/telegram';
 
 export async function GET(request: NextRequest) {
   try {
@@ -94,6 +95,9 @@ export async function POST(request: NextRequest) {
         amount: depositAmount
       }
     });
+
+    // Send Telegram notification
+    await notifyNewDeposit(user.walletAddress, depositAmount, txHash, 'Pending');
 
     return NextResponse.json({
       success: true,

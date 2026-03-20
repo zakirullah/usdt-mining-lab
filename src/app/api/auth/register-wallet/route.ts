@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { createHash, randomBytes } from 'crypto';
+import { notifyNewUser } from '@/lib/telegram';
 
 // Hash PIN
 function hashPin(pin: string): string {
@@ -155,6 +156,9 @@ export async function POST(request: NextRequest) {
         message: `New miner just joined USDT Mining Lab`
       }
     });
+
+    // Send Telegram notification
+    await notifyNewUser(user.walletAddress);
 
     // Create response with cookie
     const response = NextResponse.json({
