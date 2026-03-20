@@ -4336,7 +4336,7 @@ export default function UsdtMiningLab() {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-400">
                   <Shield className="w-4 h-4 text-green-400" />
-                  <span>Minimum withdrawal: 10 USDT</span>
+                  <span>Minimum withdrawal: 10 USDT • Fee: 5%</span>
                 </div>
               </div>
 
@@ -4374,6 +4374,26 @@ export default function UsdtMiningLab() {
                       MAX
                     </button>
                   </div>
+
+                  {/* Fee Breakdown */}
+                  {withdrawAmount && parseFloat(withdrawAmount) > 0 && (
+                    <div className="mt-3 p-3 bg-slate-800/50 rounded-xl border border-white/5">
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="text-gray-400">Withdrawal Amount:</span>
+                        <span className="text-white">${parseFloat(withdrawAmount).toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="text-gray-400">Fee (5%):</span>
+                        <span className="text-red-400">-${(parseFloat(withdrawAmount) * 0.05).toFixed(2)}</span>
+                      </div>
+                      <div className="border-t border-white/10 pt-2 mt-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-300 font-medium">You'll Receive:</span>
+                          <span className="text-green-400 font-bold">${(parseFloat(withdrawAmount) * 0.95).toFixed(2)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -4425,7 +4445,7 @@ export default function UsdtMiningLab() {
                 </motion.button>
 
                 <div className="text-center text-xs text-gray-500">
-                  Withdrawals are processed within 24 hours
+                  Withdrawals are processed within 24 hours • 5% fee applies
                 </div>
               </form>
             </motion.div>

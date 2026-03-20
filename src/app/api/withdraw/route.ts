@@ -3,6 +3,9 @@ import { db } from '@/lib/db';
 import { createHash } from 'crypto';
 import { getAuthUser } from '@/lib/auth';
 
+// Withdrawal fee percentage (5%)
+const WITHDRAWAL_FEE_PERCENT = 5;
+
 // Hash PIN
 function hashPin(pin: string): string {
   return createHash('sha256').update(pin).digest('hex');
@@ -66,7 +69,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check balance
+    // Calculate 5% fee based on withdrawal amount
+    const fee = withdrawAmount * (WITHDRAWAL_FEE_PERCENT / 100);
+    const netAmount = withdrawAmount - fee;
+
+    // Check balance (need full amount including fee)
     if (withdrawAmount > user.balance) {
       return NextResponse.json(
         { error: 'Insufficient balance' },
@@ -90,25 +97,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify PIN
-    if (user.securityPin !== hashPin(pin)) {
+    // Verify PIN - check both hashed and plain for compatibility
+    const hashedPin = hashPin(pin);
+    if (user.securityPin !== hashedPin && user.securityPin !== pin) {
       return NextResponse.json(
         { error: 'Invalid security PIN' },
         { status: 400 }
       );
     }
 
-    // Create withdrawal request
+    // Create withdrawal request with fee info
     const withdrawal = await db.withdrawal.create({
       data: {
         userId: user.id,
-        amount: withdrawAmount,
+        amount: netAmount, // Net amount after fee
         walletAddress,
         status: 'pending'
       }
     });
 
-    // Deduct from balance
+    // Deduct full amount from balance (including fee)
     await db.user.update({
       where: { id: user.id },
       data: {
@@ -116,14 +124,14 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    // Create transaction
+    // Create transaction with fee details
     await db.transaction.create({
       data: {
         userId: user.id,
         type: 'withdrawal_request',
-        amount: withdrawAmount,
+        amount: netAmount,
         status: 'pending',
-        description: `Withdrawal request to ${walletAddress.slice(0, 8)}...`
+        description: `Withdrawal to ${walletAddress.slice(0, 8)}... | Fee: ${fee.toFixed(2)} USDT (5%) | Net: ${netAmount.toFixed(2)} USDT`
       }
     });
 
@@ -131,8 +139,8 @@ export async function POST(request: NextRequest) {
     await db.notification.create({
       data: {
         type: 'withdraw',
-        message: `${user.walletAddress.slice(0, 8)}... just withdrew ${withdrawAmount} USDT`,
-        amount: withdrawAmount
+        message: `${user.walletAddress.slice(0, 8)}... just withdrew ${netAmount.toFixed(2)} USDT`,
+        amount: netAmount
       }
     });
 
@@ -141,7 +149,11 @@ export async function POST(request: NextRequest) {
       message: 'Withdrawal request submitted! Awaiting admin approval.',
       data: {
         id: withdrawal.id,
-        amount: withdrawal.amount,
+        requestedAmount: withdrawAmount,
+        fee: fee,
+        feePercent: WITHDRAWAL_FEE_PERCENT,
+        netAmount: netAmount,
+        walletAddress: walletAddress,
         status: withdrawal.status,
         createdAt: withdrawal.createdAt
       }
