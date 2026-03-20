@@ -1,0 +1,235 @@
+// Usdt Mining Lab - Prisma Schema
+// Crypto Mining Platform Database
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model - stores all user information
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String
+  walletAddress String   @unique
+  securityPin   String
+  referralCode  String   @unique
+  referredBy    String?
+  deviceOs      String?
+  role          String   @default("user") // "user" or "admin"
+  balance       Float    @default(0)
+  totalProfit   Float    @default(0)
+  referralEarnings Float @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  deposits      Deposit[]
+  withdrawals   Withdrawal[]
+  miningPlans   UserMining[]
+  referralsAsReferrer Referral[] @relation("ReferrerReferrals")
+  referralsAsReferred  Referral[] @relation("ReferredReferrals")
+  transactions  Transaction[]
+  notifications Notification[]
+  sessions      Session[]
+
+  @@map("umlab_users")
+}
+
+// Admin settings model
+model AdminSettings {
+  id                String   @id @default(cuid())
+  siteName          String   @default("Usdt Mining Lab")
+  depositWallet     String
+  minDeposit        Float    @default(10)
+  minWithdraw       Float    @default(10)
+  maintenanceMode   Boolean  @default(false)
+  updatedAt         DateTime @updatedAt
+
+  @@map("umlab_admin_settings")
+}
+
+// Mining Plan model - the single mining package
+model MiningPlan {
+  id           String   @id @default(cuid())
+  name         String   @default("Starter Mining Plan")
+  dailyProfit  Float    @default(4) // 4% daily
+  duration     Int      @default(30) // 30 days
+  minInvest    Float    @default(10)
+  maxInvest    Float    @default(100000)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  userMining   UserMining[]
+
+  @@map("umlab_mining_plans")
+}
+
+// User Mining - tracks user's active mining
+model UserMining {
+  id            String   @id @default(cuid())
+  userId        String
+  planId        String
+  investment    Float
+  dailyProfit   Float
+  totalEarned   Float    @default(0)
+  status        String   @default("active") // "active", "expired", "pending"
+  startedAt     DateTime @default(now())
+  expiresAt     DateTime
+  lastUpdateAt  DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan          MiningPlan @relation(fields: [planId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+  @@map("umlab_user_mining")
+}
+
+// Deposit model
+model Deposit {
+  id              String   @id @default(cuid())
+  userId          String
+  amount          Float
+  txHash          String
+  status          String   @default("pending") // "pending", "approved", "rejected"
+  approvedBy      String?
+  approvedAt      DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@map("umlab_deposits")
+}
+
+// Withdrawal model
+model Withdrawal {
+  id              String   @id @default(cuid())
+  userId          String
+  amount          Float
+  walletAddress   String
+  status          String   @default("pending") // "pending", "approved", "rejected"
+  approvedBy      String?
+  approvedAt      DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@map("umlab_withdrawals")
+}
+
+// Referral model - 3-level referral system
+model Referral {
+  id          String   @id @default(cuid())
+  referrerId  String
+  referredId  String
+  level       Int      // 1, 2, or 3
+  commission  Float    @default(0)
+  earnedAt    DateTime @default(now())
+
+  // Relations
+  referrer    User @relation("ReferrerReferrals", fields: [referrerId], references: [id], onDelete: Cascade)
+  referred    User @relation("ReferredReferrals", fields: [referredId], references: [id], onDelete: Cascade)
+
+  @@unique([referredId, level])
+  @@index([referrerId])
+  @@index([referredId])
+  @@map("umlab_referrals")
+}
+
+// Transaction model - logs all transactions
+model Transaction {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String   // "deposit", "withdrawal", "mining_profit", "referral_bonus"
+  amount      Float
+  status      String   @default("completed")
+  description String?
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([type])
+  @@map("umlab_transactions")
+}
+
+// Notification model - for live activity popups
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String?
+  type      String   // "deposit", "withdrawal", "register"
+  message   String
+  amount    Float?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User?  @relation(fields: [userId], references: [id])
+
+  @@index([createdAt])
+  @@map("umlab_notifications")
+}
+
+// Session model for auth
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  token        String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  // Relation
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("umlab_sessions")
+}
+
+// Broadcast Message model - admin global messages
+model BroadcastMessage {
+  id          String   @id @default(cuid())
+  title       String
+  message     String
+  type        String   @default("info") // "info", "warning", "success", "error"
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
+  @@map("umlab_broadcasts")
+}
+
+// User Stats - cached statistics
+model UserStats {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  totalDeposits     Float    @default(0)
+  totalWithdrawals  Float    @default(0)
+  totalMiningEarned Float    @default(0)
+  totalReferrals    Int      @default(0)
+  totalReferralEarnings Float @default(0)
+  updatedAt         DateTime @updatedAt
+
+  @@map("umlab_user_stats")
+}
