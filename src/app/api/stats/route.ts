@@ -83,10 +83,10 @@ export async function GET() {
         _sum: { amount: true }
       }),
       
-      // Today visitors
-      db.visitor.count({
-        where: { createdAt: { gte: today } }
-      }).catch(() => 0),
+      // Today visitors from DailyStat table (more reliable)
+      db.dailyStat.findUnique({
+        where: { date: today }
+      }).then(stat => stat?.visitors || 0).catch(() => 0),
       
       // Online visitors (visited in last 5 minutes)
       db.visitor.count({
