@@ -9,7 +9,8 @@ import {
   LogOut, Clock, Home, Copy, Check, X, AlertCircle, CheckCircle,
   ChevronRight, DollarSign, HelpCircle, MessageCircle, Settings, Server, Upload,
   Coins, Hash, Image, Send, Flame, Diamond, Sparkles, Rocket, Target,
-  Thermometer, Power, Wifi, CpuIcon, Timer, Gauge, BarChart3, PieChart, Play
+  Thermometer, Power, Wifi, CpuIcon, Timer, Gauge, BarChart3, PieChart, Play,
+  UserPlus
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { 
@@ -860,18 +861,12 @@ export default function UsdtMiningLab() {
     { q: 'How does the referral program work?', a: 'Share your referral code and earn 7% commission on every deposit made by your referrals.' },
   ];
 
-  // Recent Withdrawals Data - Fetch from API
+  // Recent Withdrawals Data - Fetch from API (REAL DATA ONLY)
   const [recentWithdrawals, setRecentWithdrawals] = useState<Array<{
     user: string;
     amount: number;
     time: string;
-  }>>([
-    { user: 'Khalid', amount: 82, time: 'Just now' },
-    { user: 'Ahmed', amount: 42, time: 'Just now' },
-    { user: 'Michael', amount: 144, time: 'Just now' },
-    { user: 'Aisha', amount: 95, time: '2 min ago' },
-    { user: 'Ali', amount: 120, time: '5 min ago' },
-  ]);
+  }>>([]);
 
   // Fetch recent withdrawals from API
   useEffect(() => {
@@ -883,26 +878,42 @@ export default function UsdtMiningLab() {
           const withdrawals = data.activities
             .filter((a: { type: string }) => a.type === 'withdraw')
             .slice(0, 5)
-            .map((a: { message: string; amount?: number; createdAt?: Date }) => {
+            .map((a: { message: string; amount?: number; createdAt?: string }) => {
               // Extract username from message like "0x1234...abcd just withdrew 120 USDT"
               const match = a.message.match(/^(.+?)\s+just withdrew/);
               const user = match ? match[1] : 'User';
+              // Calculate time ago
+              const timeAgo = a.createdAt ? getTimeAgo(new Date(a.createdAt)) : 'Just now';
               return {
                 user,
                 amount: a.amount || 0,
-                time: 'Just now'
+                time: timeAgo
               };
             });
-          if (withdrawals.length > 0) {
-            setRecentWithdrawals(withdrawals);
-          }
+          setRecentWithdrawals(withdrawals);
         }
       } catch {
-        // Keep demo data on error
+        // Keep empty on error
       }
     };
     fetchWithdrawals();
+    // Refresh every 30 seconds
+    const interval = setInterval(fetchWithdrawals, 30000);
+    return () => clearInterval(interval);
   }, []);
+
+  // Helper function to calculate time ago
+  function getTimeAgo(date: Date): string {
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins} min ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    return `${Math.floor(diffHours / 24)}d ago`;
+  }
 
   // Handle Withdraw
   const handleWithdraw = async (e: React.FormEvent) => {
@@ -948,31 +959,12 @@ export default function UsdtMiningLab() {
     }
   };
 
-  // Live Activity Ticker State
+  // Live Activity Ticker State - REAL DATA ONLY
   const [tickerActivities, setTickerActivities] = useState<Array<{
     type: string;
     message: string;
     amount?: number;
   }>>([]);
-
-  // Demo activities for ticker
-  const demoTickerActivities = [
-    { type: 'withdraw', message: 'Ali withdrew 120 USDT', amount: 120 },
-    { type: 'deposit', message: 'Ahmed deposited 90 USDT', amount: 90 },
-    { type: 'plan', message: 'John activated Starter Plan' },
-    { type: 'plan', message: 'Emma activated Pro Plan' },
-    { type: 'deposit', message: 'Lucas deposited 200 USDT', amount: 200 },
-    { type: 'withdraw', message: 'Sarah withdrew 85 USDT', amount: 85 },
-    { type: 'deposit', message: 'Mike deposited 150 USDT', amount: 150 },
-    { type: 'plan', message: 'David activated Pro Plan' },
-    { type: 'withdraw', message: 'Lisa withdrew 95 USDT', amount: 95 },
-    { type: 'deposit', message: 'James deposited 75 USDT', amount: 75 },
-    { type: 'plan', message: 'Sophie activated Starter Plan' },
-    { type: 'withdraw', message: 'Omar withdrew 180 USDT', amount: 180 },
-    { type: 'deposit', message: 'Nina deposited 300 USDT', amount: 300 },
-    { type: 'plan', message: 'Carlos activated Pro Plan' },
-    { type: 'withdraw', message: 'Fatima withdrew 65 USDT', amount: 65 },
-  ];
 
   // Fetch live activities for ticker
   useEffect(() => {
@@ -983,10 +975,10 @@ export default function UsdtMiningLab() {
         if (data.hasRealData && data.activities.length > 0) {
           setTickerActivities(data.activities);
         } else {
-          setTickerActivities(demoTickerActivities);
+          setTickerActivities([]);
         }
       } catch {
-        setTickerActivities(demoTickerActivities);
+        setTickerActivities([]);
       }
     };
     fetchActivities();
@@ -1255,37 +1247,43 @@ export default function UsdtMiningLab() {
                 <span className="text-green-400 text-xs font-bold uppercase tracking-wider whitespace-nowrap">LIVE</span>
               </div>
               <div className="flex-1 overflow-hidden">
-                <motion.div
-                  className="flex gap-8 whitespace-nowrap"
-                  animate={{ x: ['0%', '-50%'] }}
-                  transition={{
-                    x: {
-                      duration: tickerActivities.length * 2,
-                      repeat: Infinity,
-                      ease: 'linear',
-                    },
-                  }}
-                >
-                  {[...tickerActivities, ...tickerActivities].map((activity, i) => (
-                    <div key={i} className="flex items-center gap-2 px-3">
-                      {activity.type === 'withdraw' && (
-                        <ArrowUpRight className="w-4 h-4 text-red-400" />
-                      )}
-                      {activity.type === 'deposit' && (
-                        <ArrowDownRight className="w-4 h-4 text-green-400" />
-                      )}
-                      {activity.type === 'plan' && (
-                        <Zap className="w-4 h-4 text-cyan-400" />
-                      )}
-                      <span className={`text-sm font-medium ${
-                        activity.type === 'withdraw' ? 'text-red-300' :
-                        activity.type === 'deposit' ? 'text-green-300' : 'text-cyan-300'
-                      }`}>
-                        {activity.message}
-                      </span>
-                    </div>
-                  ))}
-                </motion.div>
+                {tickerActivities.length > 0 ? (
+                  <motion.div
+                    className="flex gap-8 whitespace-nowrap"
+                    animate={{ x: ['0%', '-50%'] }}
+                    transition={{
+                      x: {
+                        duration: tickerActivities.length * 2,
+                        repeat: Infinity,
+                        ease: 'linear',
+                      },
+                    }}
+                  >
+                    {[...tickerActivities, ...tickerActivities].map((activity, i) => (
+                      <div key={i} className="flex items-center gap-2 px-3">
+                        {activity.type === 'withdraw' && (
+                          <ArrowUpRight className="w-4 h-4 text-red-400" />
+                        )}
+                        {activity.type === 'deposit' && (
+                          <ArrowDownRight className="w-4 h-4 text-green-400" />
+                        )}
+                        {activity.type === 'register' && (
+                          <UserPlus className="w-4 h-4 text-purple-400" />
+                        )}
+                        <span className={`text-sm font-medium ${
+                          activity.type === 'withdraw' ? 'text-red-300' :
+                          activity.type === 'deposit' ? 'text-green-300' : 'text-purple-300'
+                        }`}>
+                          {activity.message}
+                        </span>
+                      </div>
+                    ))}
+                  </motion.div>
+                ) : (
+                  <div className="flex items-center gap-2 px-4">
+                    <span className="text-gray-500 text-sm">Waiting for activity...</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -2429,20 +2427,28 @@ export default function UsdtMiningLab() {
                 <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs font-medium rounded-full">Live</span>
               </div>
               <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-3 space-y-2">
-                {recentWithdrawals.map((item, i) => (
-                  <div key={i} className="flex items-center justify-between p-2 bg-slate-800/50 rounded-xl">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
-                        <ArrowUpRight className="w-4 h-4 text-purple-400" />
+                {recentWithdrawals.length > 0 ? (
+                  recentWithdrawals.map((item, i) => (
+                    <div key={i} className="flex items-center justify-between p-2 bg-slate-800/50 rounded-xl">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
+                          <ArrowUpRight className="w-4 h-4 text-purple-400" />
+                        </div>
+                        <div>
+                          <span className="text-white text-sm font-medium">{item.user}</span>
+                          <span className="text-gray-500 text-xs ml-2">{item.time}</span>
+                        </div>
                       </div>
-                      <div>
-                        <span className="text-white text-sm font-medium">{item.user}</span>
-                        <span className="text-gray-500 text-xs ml-2">{item.time}</span>
-                      </div>
+                      <span className="text-purple-400 font-bold text-sm">+{item.amount} USDT</span>
                     </div>
-                    <span className="text-purple-400 font-bold text-sm">+{item.amount} USDT</span>
+                  ))
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-6 text-gray-500">
+                    <ArrowUpRight className="w-8 h-8 mb-2 opacity-50" />
+                    <span className="text-sm">No recent withdrawals</span>
+                    <span className="text-xs text-gray-600 mt-1">Withdrawals will appear here</span>
                   </div>
-                ))}
+                )}
               </div>
             </motion.div>
 
