@@ -3740,13 +3740,15 @@ export default function UsdtMiningLab() {
                 {[
                   {
                     label: 'Main Balance',
-                    value: `$${formatNumber(user?.balance || 0)}`,
+                    value: `$${formatNumber((user?.balance || 0) + totalLiveEarned)}`,
+                    subValue: `+ $${formatNumber(totalLiveEarned, 6)} live profit`,
                     icon: Wallet,
-                    gradient: 'from-cyan-500 to-blue-600',
-                    bgGradient: 'from-cyan-500/10 to-blue-500/5',
-                    borderColor: 'border-cyan-500/20',
-                    textColor: 'text-cyan-400',
-                    glow: 'rgba(0, 212, 255, 0.3)'
+                    gradient: 'from-amber-400 to-yellow-500',
+                    bgGradient: 'from-amber-500/15 to-yellow-500/10',
+                    borderColor: 'border-amber-500/30',
+                    textColor: 'text-amber-400',
+                    glow: 'rgba(251, 191, 36, 0.4)',
+                    isLive: true
                   },
                   {
                     label: 'Total Invested',
@@ -3760,7 +3762,7 @@ export default function UsdtMiningLab() {
                   },
                   {
                     label: 'Total Profit',
-                    value: `$${formatNumber(user?.totalProfit || 0)}`,
+                    value: `$${formatNumber((user?.totalProfit || 0) + totalLiveEarned)}`,
                     icon: Activity,
                     gradient: 'from-purple-500 to-violet-600',
                     bgGradient: 'from-purple-500/10 to-violet-500/5',
@@ -3795,6 +3797,15 @@ export default function UsdtMiningLab() {
                     </div>
                     <p className="text-gray-500 text-xs mb-1">{stat.label}</p>
                     <p className={`text-xl font-bold ${stat.textColor}`}>{stat.value}</p>
+                    {stat.isLive && totalLiveEarned > 0 && (
+                      <motion.p 
+                        animate={{ opacity: [0.7, 1, 0.7] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                        className="text-xs text-amber-300/80 mt-1 font-medium"
+                      >
+                        💰 +$<span className="font-mono">{formatNumber(totalLiveEarned, 6)}</span> mining
+                      </motion.p>
+                    )}
                   </motion.div>
                 ))}
               </div>
