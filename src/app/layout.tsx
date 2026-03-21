@@ -55,4 +55,4 @@ export default function RootLayout({
     </html>
   );
 }
-// Build timestamp: 1773868000 - Force rebuild
+// Build timestamp: 1773870000 - Force rebuild - Supabase PostgreSQL

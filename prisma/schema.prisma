@@ -54,6 +54,10 @@ model AdminSettings {
   minDeposit        Float    @default(10)
   minWithdraw       Float    @default(10)
   maintenanceMode   Boolean  @default(false)
+  telegramEnabled   Boolean  @default(false)
+  telegramBotToken  String?
+  telegramChatId    String?
+  telegramPublicChatId String?
   updatedAt         DateTime @updatedAt
 
   @@map("umlab_admin_settings")
