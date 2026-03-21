@@ -4,9 +4,8 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Database URL from environment variable
-// Set DATABASE_URL in Railway: postgresql://postgres.bvqtrchbvptorbanmxey:PASSWORD@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres?pgbouncer=true&sslmode=require
-const databaseUrl = process.env.DATABASE_URL || 'postgresql://placeholder@localhost:5432/postgres'
+// Supabase PostgreSQL Database URL
+const SUPABASE_DB_URL = 'postgresql://postgres.bvqtrchbvptorbanmxey:zakirullah%40123456789@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres?pgbouncer=true&sslmode=require'
 
 export const db =
   globalForPrisma.prisma ??
@@ -14,7 +13,7 @@ export const db =
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
     datasources: {
       db: {
-        url: databaseUrl
+        url: SUPABASE_DB_URL
       }
     }
   })
