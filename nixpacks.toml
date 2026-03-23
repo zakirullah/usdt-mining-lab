@@ -6,10 +6,7 @@ nixPkgs = ['nodejs_22', 'bun']
 cmd = 'bun install'
 
 [phases.build]
-cmd = '''
-export DATABASE_URL="postgresql://postgres.bvqtrchbvptorbanmxey:zakirullah%40123456789@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres?pgbouncer=true&sslmode=require"
-bun run build
-'''
+cmd = 'bunx prisma generate && bun run build'
 
 [start]
 cmd = 'bun run start'
