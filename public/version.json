@@ -1,0 +1,9 @@
+{
+  "version": "2.5.3",
+  "buildTime": "2025-01-13T00:00:00Z",
+  "features": [
+    "supabase-postgresql",
+    "live-statistics",
+    "launch-date-20-march-2026"
+  ]
+}
